@@ -65,7 +65,8 @@
 
 #include <mrpt/gui.h>
 #include <mrpt/opengl.h>
-#include <mrpt/utils.h>
+#include <mrpt/math/utils.h>
+#include <Eigen/Dense>
 #ifdef WITH_OLD_MRPT_VERSION
 	#include <mrpt/maps.h>
 #else

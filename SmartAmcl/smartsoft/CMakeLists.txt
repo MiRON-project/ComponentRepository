@@ -41,10 +41,9 @@ SMART_COMPONENT_AUTOBUILD_DEPENDENCIES()
 
 # you can add additional external libraries using regular CMake commands, e.g.:
 FIND_PACKAGE(OpenCV REQUIRED)
+FIND_PACKAGE(Eigen3 3.3 REQUIRED)
 
-FIND_PACKAGE( MRPT REQUIRED gui base maps)
-GET_PROPERTY(MRPT_INCLUDE_DIRS DIRECTORY PROPERTY INCLUDE_DIRECTORIES)
-#MESSAGE("${MRPT_INCLUDE_DIRS} | ${MRPT_LIBS}")
+FIND_PACKAGE( MRPT REQUIRED gui math maps img)
 
 MESSAGE("MRPT_VERSION: ${MRPT_VERSION}")
 IF(MRPT_VERSION VERSION_LESS 1.3.0)
@@ -58,6 +57,11 @@ ENDIF()
 SMART_ADD_UTILITY(YAML_CPP 0.2.5)
 
 # these are the regular includes (add your own includes, if needed)
+foreach(dir ${CMAKE_PREFIX_PATH})
+  message(STATUS "dir='${dir}'")
+  INCLUDE_DIRECTORIES(${dir})
+endforeach()
+
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/src
   ${CMAKE_CURRENT_LIST_DIR}/src-gen
@@ -82,7 +86,7 @@ FILE(GLOB FURTHER_SRCS src/map/*.cc src/pf/*.cc src/sensors/*.cc)
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRC} ${SRC_GEN} ${SRC_GEN_PARAMS} ${FURTHER_SRCS}) # add ${USER_SRC} (if needed)
 
 # link your external libraries here (if there are any)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${OpenCV_LIBS} ${MRPT_LIBS} YAML_CPP)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${OpenCV_LIBS} ${MRPT_LIBS} YAML_CPP Eigen3::Eigen)
 
 #INSTALL(FILES ${PROJECT_SOURCE_DIR}/src-gen/${PROJECT_NAME}.ini.template DESTINATION etc)
 
