@@ -67,6 +67,8 @@
 #ifdef WITH_OLD_MRPT_VERSION
 #else
 	#include <mrpt/opengl/CPlanarLaserScan.h>
+	#include <mrpt/img/CImage.h>
+	#include <mrpt/math/TPoint2D.h>
 #endif
 
 VisualizationHelper::VisualizationHelper() {
@@ -80,15 +82,15 @@ void VisualizationHelper::initializeVisualization(){
 
 void VisualizationHelper::initObjects() {
 
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
-		opengl::CAxisPtr axis = opengl::CAxis::Create(-10, -10, 0, 10, 10, 1,
+		opengl::CAxis::Ptr axis = opengl::CAxis::Create(-10, -10, 0, 10, 10, 1,
 				1, 1, true);
 		axis->setName("axis");
 		axis->setColor(0, 0, 0);
 		ptrScene->insert(axis);
 
-		opengl::CCylinderPtr cylinder = opengl::CCylinder::Create(0.2, 0.2, 0.4, 10, 10);
+		opengl::CCylinder::Ptr cylinder = opengl::CCylinder::Create(0.2, 0.2, 0.4, 10, 10);
 		cylinder->setName("robot");
 		cylinder->setColor(0, 0, 1);
 		ptrScene->insert(cylinder);
@@ -98,27 +100,27 @@ void VisualizationHelper::initObjects() {
 		//		robotArrow->setName("robotOrientation");
 		//		ptrScene->insert(robotArrow);
 
-		opengl::CPlanarLaserScanPtr scan = opengl::CPlanarLaserScan::Create();
+		opengl::CPlanarLaserScan::Ptr scan = opengl::CPlanarLaserScan::Create();
 		scan->setName("scan");
 		ptrScene->insert(scan);
 
-		opengl::CPointCloudColouredPtr particles =
+		opengl::CPointCloudColoured::Ptr particles =
 				opengl::CPointCloudColoured::Create();
 		particles->setName("particles");
 		particles->setPointSize(3);
 		ptrScene->insert(particles);
 
-		opengl::CSetOfLinesPtr particleLines = opengl::CSetOfLines::Create();
+		opengl::CSetOfLines::Ptr particleLines = opengl::CSetOfLines::Create();
 		particleLines->setName("particleLines");
 		ptrScene->insert(particleLines);
 
-		opengl::CPointCloudColouredPtr hypotheses =
+		opengl::CPointCloudColoured::Ptr hypotheses =
 				opengl::CPointCloudColoured::Create();
 		hypotheses->setName("hypotheses");
 		hypotheses->setPointSize(10);
 		ptrScene->insert(hypotheses);
 
-		opengl::CTextPtr robotText = opengl::CText::Create();
+		opengl::CText::Ptr robotText = opengl::CText::Create();
 		robotText->setName("robotLabel");
 		robotText->setColor(0, 0, 0);
 		ptrScene->insert(robotText);
@@ -148,7 +150,7 @@ VisualizationHelper::~VisualizationHelper() {
 }
 
 void VisualizationHelper::clear() {
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
 		ptrScene->clear();
 	}
@@ -188,14 +190,14 @@ void VisualizationHelper::displayMap(map_t* map) {
 
         //WORKAROUND: do not use construtor from matix, since mrpt bug:
         //https://github.com/MRPT/mrpt/commit/d4e5adf3eccbb655a9340254b88985bb808c1bda
-        utils::CImage image;
+        img::CImage image;
         image.setFromMatrix(m, true);
 	//image.flipVertical();
-	gridMap.loadFromBitmap(image, scale, x, y);
+	gridMap.loadFromBitmap(image, scale, math::TPoint2D(x, y));
 
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
-		opengl::CSetOfObjectsPtr ptrObjs = opengl::CSetOfObjects::Create();
+		opengl::CSetOfObjects::Ptr ptrObjs = opengl::CSetOfObjects::Create();
 		gridMap.getAs3DObject(ptrObjs);
 
 		ptrScene->insert(ptrObjs);
@@ -257,10 +259,11 @@ void VisualizationHelper::displayLaserScan(
 
 	}
 
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
-		opengl::CPlanarLaserScanPtr sPtr =
-				(opengl::CPlanarLaserScanPtr) ptrScene->getByName("scan");
+		opengl::CPlanarLaserScan::Ptr sPtr =
+			std::dynamic_pointer_cast<opengl::CPlanarLaserScan> 
+				(ptrScene->getByName("scan"));
 		sPtr->setScan(s);
 	}
 	grid3D->unlockAccess3DScene();
@@ -271,10 +274,10 @@ void VisualizationHelper::displayLaserScan(
 
 void VisualizationHelper::displayCoordinateSystem( poses::CPose3D& pose, double size){
 
-		opengl::COpenGLScenePtr &theScene = grid3D->get3DSceneAndLock();
+		opengl::COpenGLScene::Ptr &theScene = grid3D->get3DSceneAndLock();
 
 
-		opengl::CSetOfObjectsPtr corner = opengl::stock_objects::CornerXYZSimple(size,2.0);
+		opengl::CSetOfObjects::Ptr corner = opengl::stock_objects::CornerXYZSimple(size,2.0);
 		{
 		corner->setPose(pose);
 		theScene->insert(corner);
@@ -295,13 +298,13 @@ void VisualizationHelper::displayBase(const CommBasicObjects::CommBasePose& pos)
 	labelString << "Pose: x=" << p.get_x(1.0) << ", y=" << p.get_y(1.0)
 			<< ", a=" << p.get_azimuth();
 
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
-		opengl::CRenderizablePtr obj1 = ptrScene->getByName("robot");
+		opengl::CRenderizable::Ptr obj1 = ptrScene->getByName("robot");
 		obj1->setPose(pose);
 
-		opengl::CTextPtr label = (opengl::CTextPtr) ptrScene->getByName(
-				"robotLabel");
+		opengl::CText::Ptr label = std::dynamic_pointer_cast<opengl::CText>
+			(ptrScene->getByName("robotLabel"));
 		label->setPose(poseLabel);
 		label->setString(labelString.str());
 
@@ -316,14 +319,16 @@ void VisualizationHelper::displayParticles(const pf_sample_set_t* set) {
 
 	std::cout << "Num samples: " << set->sample_count << "\n";
 
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
-		opengl::CPointCloudColouredPtr obj =
-				(opengl::CPointCloudColouredPtr) ptrScene->getByName("particles");
+		opengl::CPointCloudColoured::Ptr obj =
+				std::dynamic_pointer_cast<opengl::CPointCloudColoured>
+					(ptrScene->getByName("particles"));
 		obj->clear();
 
-		opengl::CSetOfLinesPtr particleLines =
-				(opengl::CSetOfLinesPtr) ptrScene->getByName("particleLines");
+		opengl::CSetOfLines::Ptr particleLines =
+				std::dynamic_pointer_cast<opengl::CSetOfLines>
+					(ptrScene->getByName("particleLines"));
 		particleLines->clear();
 		particleLines->setColor(0, 1, 0);
 
@@ -349,10 +354,11 @@ void VisualizationHelper::displayHypotheses(const std::vector<amcl_hyp_t>& hyps)
 
 	std::cout << "num hypotheses: " << hyps.size() << "\n";
 
-	opengl::COpenGLScenePtr &ptrScene = grid3D->get3DSceneAndLock();
+	opengl::COpenGLScene::Ptr &ptrScene = grid3D->get3DSceneAndLock();
 	{
-		opengl::CPointCloudColouredPtr obj =
-				(opengl::CPointCloudColouredPtr) ptrScene->getByName("hypotheses");
+		opengl::CPointCloudColoured::Ptr obj =
+				std::dynamic_pointer_cast<opengl::CPointCloudColoured>
+					(ptrScene->getByName("hypotheses"));
 		obj->clear();
 
 		for (size_t i = 0; i < hyps.size(); i++) {
