@@ -6,4 +6,5 @@
 # Files can be relative to component project directory or absolute.
 # Add one file or directory per line.
 #
-DEPLOY_LIBRARIES="libYAML_CPP.so*"
+DEPLOY_LIBRARIES="libYAML_CPP.so*
+mrpt/*"
