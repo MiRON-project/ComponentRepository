@@ -15,6 +15,39 @@ This repository is maintained by Servicerobotik Ulm. For more information see:
 * Big picture: relation of repositories: https://wiki.servicerobotik-ulm.de/download
 * SRRC Technical Wiki on SmartSoft and SmartMDSD Toolchain: https://wiki.servicerobotik-ulm.de
 
+## MRPT Dependency in SmartAmcl
+
+* Install minimum recommended dependencies:
+```
+sudo apt install build-essential pkg-config cmake libwxgtk3.0-dev libwxgtk3.0-gtk3-dev \
+libopencv-dev libeigen3-dev libgtest-dev
+```
+
+* Install additional dependencies to enable most MRPT features (except ROS bridges):
+```
+sudo apt install libftdi-dev freeglut3-dev zlib1g-dev libusb-1.0-0-dev \
+libudev-dev libfreenect-dev libdc1394-22-dev libavformat-dev libswscale-dev \
+libassimp-dev libjpeg-dev   libsuitesparse-dev libpcap-dev liboctomap-dev
+```
+
+* Build with cmake as usual:
+```
+mkdir ~/dev && cd ~/dev
+git clone git@github.com:MiRON-project/mrpt.git
+cd mrpt
+mkdir build && cd build
+cmake ..
+make
+ln -s ~/dev/mrpt/build/lib ~/SOFTWARE/smartsoft/lib
+```
+
+* Add MRPT directory to ~/.profile:
+```
+cat >> ~/.profile <<x
+export MRPT_DIR=$HOME/dev/mrpt/build    
+x
+```
+
 ## Installation and compilation instructions
 
 For compiling and installing the components, please checkout and install the [**ACE/SmartSoft Framework**](https://github.com/Servicerobotics-Ulm/AceSmartSoftFramework) (following [these installation instructions](https://github.com/Servicerobotics-Ulm/AceSmartSoftFramework/blob/master/README.md)) and make sure that the required [**DomainModelsRepositories**](https://github.com/Servicerobotics-Ulm/DomainModelsRepositories) are checked out.
