@@ -40,10 +40,11 @@ SMART_COMPONENT_AUTOBUILD_DEPENDENCIES()
 ## using regular CMake commands (like FIND_PACKAGE, INCLUDE_DIRECTORIES, etc.) ##
 
 # you can add additional external libraries using regular CMake commands, e.g.:
+list(APPEND CMAKE_PREFIX_PATH "$ENV{MRPT_DIR}")
+
 FIND_PACKAGE(OpenCV REQUIRED)
 FIND_PACKAGE(Eigen3 3.3 REQUIRED)
-
-FIND_PACKAGE( MRPT REQUIRED gui math maps img)
+FIND_PACKAGE( MRPT CONFIG REQUIRED gui math maps img)
 
 MESSAGE("MRPT_VERSION: ${MRPT_VERSION}")
 IF(MRPT_VERSION VERSION_LESS 1.3.0)
