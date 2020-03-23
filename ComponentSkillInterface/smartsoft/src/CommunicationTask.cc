@@ -98,8 +98,6 @@ int CommunicationTask::on_entry()
 	CommBasicObjects::CommKBRequest request;
 	CommBasicObjects::CommKBResponse answer;
 
-//REBE:
-#if 0
 	////////////////////////////////////////////////////////////////////
 	std::cout<<std::endl<<"[ReadCommandTask] Ready to receive data from FleetManager\n"<<std::endl;
 	message = "(defun format-locations-json (s obj colonmod at-sign) (declare (ignore colonmod)) (declare (ignore at-sign)) (format s \"((position-id . ~s) (x . ~3$) (y . ~3$) (phi . ~d) (type . ~s))\" (get-value obj 'name)(/ (first (get-value obj 'approach-region-pose)) 1000) (/ (second (get-value obj 'approach-region-pose)) 1000) (second (get-value obj 'orientation-region)) (get-value obj 'type)))";
@@ -128,22 +126,9 @@ int CommunicationTask::on_entry()
 	COMP->kBQueryClient->query(request,answer);
 	std::cout<<"Got KB Query Answer: "<<answer.getResponse()<<std::endl;
 	////////////////////////////////////////////////////////////////////
-#endif
-	message = "(defun format-skills (s obj colonmod at-sign) (declare (ignore colonmod)) (declare (ignore at-sign)) (format s \"( skill . ~s)\" (get-value obj 'name)))";
-	request.setRequest(message);
-	std::cout<<"Initial QUERY to KB to propagate the format function for the skills"<<std::endl;
-	COMP->kBQueryClient->query(request,answer);
-	std::cout<<"Got KB Query Answer: "<<answer.getResponse()<<std::endl;
 
-	/*message = "(defun tcl-kb-update (&key key value)`(kb-update :key ',key :value ',value)))(smartsoft-result *SMARTSOFT*))";
-	request.setRequest(message);
-	std::cout<<"Initial QUERY to KB to propagate the update function of the KB"<<std::endl;
-	COMP->kBQueryClient->query(request,answer);
-	std::cout<<"Got KB Query Answer: "<<answer.getResponse()<<std::endl;*/
-
-
-	//////////////////////////////////////////////////////////////////
 	std::cout<<std::endl<<"[CommunicationTask] Ready to receive data!\n"<<std::endl;
+
 	return 0;
 }
 

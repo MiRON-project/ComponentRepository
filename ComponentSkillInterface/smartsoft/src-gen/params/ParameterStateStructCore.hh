@@ -135,7 +135,7 @@ public:
 			// default constructor
 			SettingsType() {
 				communicationType = SettingsType::communicationTypeType::ZeroMQ;
-				ip = "127.0.0.1";
+				ip = "0.0.0.0";
 				port = 5557;
 				socket_timeout_s = 5;
 				use_socket_timeout = false;

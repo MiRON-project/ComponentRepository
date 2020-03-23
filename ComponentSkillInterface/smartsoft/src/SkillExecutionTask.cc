@@ -133,144 +133,28 @@ int SkillExecutionTask::on_execute()
 	QString msgType = root["msg-type"].toString();
 
 
-/////////////////////////////
-//P U S H    S K I L L
-/////////////////////////////
+	/////////////////////////////
+	//P U S H    S K I L L
+	/////////////////////////////
 
 	if(msgType == "push-skill")
 	{
 //		{ "msg-type" : "push-skill" , "id" : 1, "skill" : { "name" : "moverobot", "skillDefinitionFQN" : "CommNavigationObjects.CdlSkills.moverobot", "in-attribute" : { "location" : 1 }, "out-attribute" : { }}}
-
-/// READ THE SKILL AS A JSON
 
 		int id = root["id"].toInt();
 
 		QJsonObject jsonSKILL = root["skill"].toObject();
 
 		QString skillName = jsonSKILL["name"].toString();
-		QString skillDefinitionFQN = jsonSKILL["skill-definition-fqn"].toString();
+		QString skillDefinitionFQN = jsonSKILL["skillDefinitionFQN"].toString();
 
-		QJsonObject jsonINATTRIB = jsonSKILL["in-attribute"].toObject();
-		QJsonObject jsonOUTATTRIB =jsonSKILL["out-attribute"].toObject();
+		//TODO IMPL SKILL EXECUTION etc.
 
-/// READ THE A-PRIORI UNKNOWN LIST OF INPUT PARAMETERS
+		std::cout<<"[SkillExecutionTask]"<<" EXECSKILL - id: "<<id<<" name: "<<skillName.toStdString()<<" fqn: "<< skillDefinitionFQN.toStdString()<<std::endl;
 
-		// Maximum 3 input parameters (set on the KB definition of a skill)
-		std::string IN[3] = {"NIL","NIL","NIL"};
-
-		std::cout << "IN -----> Size : " << jsonINATTRIB.size() << std::endl;
-
-		QJsonObject::iterator i;
-		int cont = 0;
-		for (i = jsonINATTRIB.begin(); i != jsonINATTRIB.end(); ++i)
-			{
-		    std::cout << "IN ---> Key : " << i.key().toStdString();
-		    QJsonValue jsonvalue = i.value();
-		    if (jsonvalue.isString() == true)
-		    	{
-		    	std::cout << " --> Value : " << jsonvalue.toString().toStdString() << std::endl;
-		    	IN[cont]= jsonvalue.toString().toStdString();
-		    	}
-		    else if (jsonvalue.isDouble() == true)
-		    		{
-		    		std::cout << " --> Value : " << jsonvalue.toDouble() << std::endl;
-		    		IN[cont]= std::to_string(jsonvalue.toDouble());
-		    		}
-		    	else
-		    		{
-		    		std::cout << " --> Value : " << jsonvalue.toInt() << std::endl;
-		    		IN[cont]= std::to_string(jsonvalue.toInt());
-		    		}
-		    cont++;
-			}
-
-/// READ THE A-PRIORI UNKNOWN LIST OF OUTPUT PARAMETERS
-
-		// Maximum 3 input parameters (set on the KB definition of a skill)
-		std::string OUT[3] = {"NIL","NIL","NIL"};
-
-		std::cout << "OUT-----> Size : " << jsonOUTATTRIB.size() << std::endl;
-
-		cont = 0;
-		for (i = jsonOUTATTRIB.begin(); i != jsonOUTATTRIB.end(); ++i)
-			{
-			std::cout << "---> Key : " << i.key().toStdString() << std::endl;
-			QJsonValue jsonvalue = i.value();
-			if (jsonvalue.isString() == true)
-				{
-				std::cout << "-----> Value : " << jsonvalue.toString().toStdString() << std::endl;
-				OUT[cont]= jsonvalue.toString().toStdString();
-				}
-			else if (jsonvalue.isDouble() == true)
-			 		{
-			   		std::cout << "-----> Value : " << jsonvalue.toDouble() << std::endl;
-			   		OUT[cont]= std::to_string(jsonvalue.toDouble());
-			   		}
-			   	else
-			   		{
-			   		std::cout << "-----> Value : " << jsonvalue.toInt() << std::endl;
-			   		OUT[cont]= std::to_string(jsonvalue.toInt());
-			   		}
-			cont++;
-			}
-
-//////////////////////////////////////////////////////////////////////
-// Updating the SKILL on the KB - its execution will be addressed by the Sequencer
-
-		std::string message;
-		CommBasicObjects::CommKBRequest request;
-		CommBasicObjects::CommKBResponse answer;
-
-		//message = "(KB-UPDATE :KEY '(IS-A) :VALUE '((IS-A SKILL)(NAME "+skillName.toStdString()+")(id "+std::to_string(id)+")(IN_1 "+IN[0]+")(IN_2 "+IN[1]+")(IN_3 "+IN[2]+")(OUT_1 "+OUT[0]+")(OUT_2 "+OUT[1]+")(OUT_3 "+OUT[2]+")))";
-
-		message = "(KB-UPDATE :KEY '(IS-A) :VALUE '((IS-A SKILL)(NAME "+skillName.toStdString()+")(IN_1 "+IN[0]+")(IN_2 "+IN[1]+")(IN_3 "+IN[2]+")(OUT_1 "+OUT[0]+")(OUT_2 "+OUT[1]+")(OUT_3 "+OUT[2]+")))";
-		request.setRequest(message);
-		std::cout<<"Petition to the KB for updating the skill"<<std::endl;
-		COMP->kBQueryClient->query(request,answer);
-		std::cout<<"Got KB Query Answer: "<<answer.getResponse()<<std::endl;
-/////////////////////////////////////////////////////////////////////////////////
-
-		std::cout<<"[SkillExecutionTask]"<<" EXECSKILL - id: "<<id<<" name: "<<skillName.toStdString()<<" fqn: "<< skillDefinitionFQN.toStdString() << std::endl;
-
-
-
-//////////////////////////////////////////////////////////////////////
-// Querying the SKILL from the KB - when its execution finishes, the SEQUENCER sets the name of the skill_result on the KB with the name of the executed skill
-
-		message = "(KB-QUERY :KEY '(IS-A) :VALUE '((IS-A SKILL_RESULT)) )";
-		std::string answer_msg;
-		std::string skill_name_str = skillName.toStdString();
-		std::transform(skill_name_str.begin(), skill_name_str.end(),skill_name_str.begin(), ::toupper);
-		std::size_t found;
-
-		std::cout<<"Waiting for skill execution..."<<std::endl;
-		do // If name == NIL -> the skill is under execution !!!!!!!!!!!!!usar find para buscar skillName: mientras no este es que no se ha cerrado su ejecucion http://www.cplusplus.com/reference/string/string/find/
-		{
-			request.setRequest(message);
-			//std::cout<<"Petition to the KB for querying the skill_result"<<std::endl;
-			COMP->kBQueryClient->query(request,answer);
-			answer_msg = answer.getResponse();
-			//std::cout<<"Got KB Query Answer: "<<answer_msg<<std::endl;
-			found = answer_msg.find(skill_name_str);
-			//std::cout <<"... find: " << skill_name_str << std::endl;
-		}
-		while (found == std::string::npos);
-/////////////////////////////////////////////////////////////////////////////////
-
-		message = "(KB-UPDATE :KEY '(IS-A) :VALUE '((IS-A SKILL_RESULT)(NAME NIL)) )";
-		request.setRequest(message);
-		std::cout<<"Petition to the KB for updating the skill_result to NIL"<<std::endl;
-		COMP->kBQueryClient->query(request,answer);
-		std::cout<<"Got KB Query Answer: "<<answer.getResponse()<<std::endl;
-
-/////////////////////////////////////////////////////////////////////////////////
-
-		//return 0; /////////
 		{
 
 //		{ "msg-type" : "skill-result" , "id" : 1 , "result" : { "result" : "SUCCESS", "result-value" : "OK" }}
-
-
 
 		QJsonObject root;
 		QJsonObject result;

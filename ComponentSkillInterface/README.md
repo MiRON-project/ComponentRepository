@@ -1,11 +1,21 @@
+<!--- This file is generated from the ComponentSkillInterface.componentDocumentation model --->
+<!--- do not modify this file manually as it will by automatically overwritten by the code generator, modify the model instead and re-generate this file --->
+
 # ComponentSkillInterface Component
 
 ![ComponentSkillInterface-ComponentImage](model/ComponentSkillInterfaceComponentDefinition.jpg)
 
-The core of the `ComponentSkillInterface` in the `SkillExecutionTask.cc` has been updated for managing the reception of the skill from the BT Executor and storing it in the `ComponentKB`. Briefly, it incorporates code for
-- Reading the whole skill (including its a priori unknown collection of in- and out-attributes. A maximum of three in-attributes and three out-attributes are allowed. 
-- Updating the skill on the Knowledge Base
-- Querying the skill_result from the `ComponentKB`. When the execution of the skill ends, the `ComponentSequencer` sets the name of the skill_result on the `ComponentKB` with the name of the executed skill.
+NOTE: THIS COMPONENT PROJECT ONLY CONTAINS A COMPONENT HULL. IMPLEMENTATION OF THIS COMPONENT IS WORK IN PROGRESS. YOU CAN USE THIS COMPONENT HULL TO FILL IN YOUR OWN IMPLEMENTATION.
+
+TODO: ADD description!
+
+| Metaelement | Documentation |
+|-------------|---------------|
+| License |  |
+| Hardware Requirements |  |
+| Purpose |  |
+
+
 
 ## Service Ports
 
