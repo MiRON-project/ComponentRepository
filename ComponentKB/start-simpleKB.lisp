@@ -36,14 +36,14 @@
 (format t "Prefix: ~a~%" prefix)
 
 ;; cffi via quicklisp
-;(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
-;                                       (user-homedir-pathname))))
-;  (when (probe-file quicklisp-init)
-;    (load quicklisp-init)))
-;(ql:quickload "cffi")
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+(ql:quickload "cffi")
 
-(require "asdf")
-(require "cffi")
+;(require "asdf")
+;(require "cffi")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
