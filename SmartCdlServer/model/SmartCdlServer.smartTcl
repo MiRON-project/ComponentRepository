@@ -752,7 +752,8 @@
   (action (
             (format t "=========================>>> GOAL REACHED HANDLER~%~%")
             (cond 
-              ((equal (tcl-event-message) '(reached))
+               ((equal (tcl-event-message) "(reached)")             
+               ;((equal (tcl-event-message) '(reached)) ;;;;;ABR
                 (format t "=========================>>> GOAL REACHED !!! ~%")
                 (tcl-state :server 'cdl :state "Neutral")
                 (tcl-abort))))))
