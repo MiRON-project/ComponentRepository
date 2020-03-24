@@ -67,20 +67,21 @@ ZAFH Servicerobotik Ulm, Germany
 
 (defvar *KBCLIB* "libComponentKB.so")
 
+(pushnew (format nil "~a/bin/~a" (sb-ext:posix-getenv "SMART_ROOT_ACE") *KBCLIB*)                                                                                                                            
+  cffi:*foreign-library-directories*                                                                                                           
+  :test #'equal)
+
+(pushnew (format nil "/opt/smartSoftAce/bin/smartSimpleKB/~a" *KBCLIB*)                                                                                                                            
+  cffi:*foreign-library-directories*                                                                                                           
+  :test #'equal)
+
+(pushnew (format nil "~a/bin/ComponentKB.dll" (sb-ext:posix-getenv "SMART_ROOT_ACE"))                                                                                                                            
+  cffi:*foreign-library-directories*                                                                                                           
+  :test #'equal)
+
 (cond 
   ((probe-file *KBCLIB*) 
-   (format t "LOADING ~a from local dir!~%~%" *KBCLIB*)
    (cffi:load-foreign-library *KBCLIB*))
-  ((probe-file (format nil "~a/bin/~a" (sb-ext:posix-getenv "SMART_ROOT_ACE") *KBCLIB*))
-   (format t "LOADING ~a from env SMART_ROOT_ACE context!~%~%" *KBCLIB*)
-   (cffi:load-foreign-library (format nil "~a/bin/~a" (sb-ext:posix-getenv "SMART_ROOT_ACE") *KBCLIB*)))
-  ((probe-file (format nil "/opt/smartSoftAce/bin/smartSimpleKB/~a" *KBCLIB*))
-   (format t "LOADING INSTALLED /opt/smartSoftAce/bin/smartSimpleKB/~a~%~%" *KBCLIB*)
-   (cffi:load-foreign-library (format nil "/opt/smartSoftAce/bin/smartSimpleKB/~a") *KBCLIB*))
-  ((probe-file (format nil "~a/bin/ComponentKB.dll" (sb-ext:posix-getenv "SMART_ROOT_ACE")))
-   (format t "LOADING Component.dll from env SMART_ROOT_ACE context!~%~%")
-   (cffi:load-foreign-library (format nil "~a/bin/Component.dll" (sb-ext:posix-getenv "SMART_ROOT_ACE"))))
-
   (T (format t "ERROR loading ~a file not found!~%~%" *KBCLIB*)(exit)))
 
 
