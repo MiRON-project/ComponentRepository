@@ -220,7 +220,7 @@
                                (funcall (eval formating) query-result)
                                (t (c)
                                  (format t "[EVENT-L] ERROR formating the result: ~a~%" c)
-                                 (setf result nil)
+                                 (setf query-result nil)
                                  (values nil c))))))))
         (T
           (if (compare-state-with-kb-entries state query-result)
@@ -232,7 +232,7 @@
                                (funcall (eval formating) query-result)
                                (t (c)
                                  (format t "[EVENT-L] ERROR formating the result: ~a~%" c)
-                                 (setf result nil)
+                                 (setf query-result nil)
                                  (values nil c)))))))))
       answer)))
 
