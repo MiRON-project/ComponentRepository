@@ -36,12 +36,12 @@
 
 (defvar *LISP-INTERFACE-PREFIX* nil)
 
-
-;load asdf
-(require "asdf")
-; cffi
-(require "cffi")
-
+;; cffi via quicklisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+(ql:quickload "cffi")
 
 ;; compile and load
 (defun compile-and-load-smarttcl ( &optional (tcl-prefix "") (lispinterface-prefix "") (pre-component-startup-function nil pre-component-startup-function-supplied-p) 
