@@ -31,6 +31,7 @@
 
 (let ((indexpos nil)
       (tcl-prefix nil)
+      (module-path nil)
       (lispinterface-prefix ""))
   (setf indexpos  (position "--tcl-prefix" sb-ext:*posix-argv* :test #'equal))
   (cond
