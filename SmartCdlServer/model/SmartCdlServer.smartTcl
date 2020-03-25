@@ -2,10 +2,10 @@
 ;; NAVIGATION
 
 
-(realize-tcb  (tcb-load-navigation-map ?map)
+(realize-tcb  (tcb-load-navigation-map ?mapname)
   (module "NavigationModule")
   (action (
-            (format t "=========================>>> tcb-load-navigation-map ~s ~%" '?map)
+            (format t "=========================>>> tcb-load-navigation-map ~s ~%" '?mapname)
             (let* ((robot (tcl-kb-query :key '(is-a) :value '((is-a robot))))
                    (robot-current-room-name (get-value (tcl-kb-query :key '(is-a)  :value '((is-a robot))) 'current-room))
                    (robot-room (tcl-kb-query :key '(is-a name) :value `((is-a room)(name ,robot-current-room-name)))))
@@ -15,7 +15,7 @@
                                             (get-value robot-room 'offset)
                                             (list 0)))
 
-            (tcl-param :server 'mapper :slot 'CommNavigationObjects.MapperParams.LTMLOADYAML :value ?map)
+            (tcl-param :server 'mapper :slot 'CommNavigationObjects.MapperParams.LTMLOADYAML :value ?mapname)
             (tcl-param :server 'mapper :slot 'COMMIT)
   
             (tcl-state :server 'mapper :state "BuildCurrMap")
@@ -752,7 +752,8 @@
   (action (
             (format t "=========================>>> GOAL REACHED HANDLER~%~%")
             (cond 
-              ((equal (tcl-event-message) '(reached))
+               ((equal (tcl-event-message) "(reached)")             
+               ;((equal (tcl-event-message) '(reached)) ;;;;;ABR
                 (format t "=========================>>> GOAL REACHED !!! ~%")
                 (tcl-state :server 'cdl :state "Neutral")
                 (tcl-abort))))))
