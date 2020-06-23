@@ -1468,11 +1468,11 @@ int CdlLookupClass::calculateSpeedValues(
   double &vAccResult,double &wAccResult)
 {
 
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-	if(COMP->cdlLookupdebug.is_open()){
-		COMP->cdlLookupdebug <<" =CALL CALCULATE====================================="<<std::endl;
-	}
-#endif
+  #if DEBUG_CDL_LOOKUP_FILE_OUT
+    if(COMP->cdlLookupdebug.is_open()){
+      COMP->cdlLookupdebug <<" =CALL CALCULATE====================================="<<std::endl;
+    }
+  #endif
 
 
   double ciResult;
@@ -1518,36 +1518,36 @@ int CdlLookupClass::calculateSpeedValues(
   int i,j;
   int status;
 
-#if DEBUG_INTERACTIVE
-  cout << "CDL debug interactive\n\n";
-  cout << "current v, w [mm/s, deg/s]\n";
-  cin >> v;
-  cin >> w;
-  w = rad00(w);
-  cout << "current pos x, y, a [mm,mm,deg]\n";
-  cin >> posX;
-  cin >> posY;
-  cin >> posA;
-  posA = rad00(posA);
-  cout << "we set the following parameters:\n\n";
-  cout << "vminIni vmaxIni " << vminIni << " " << vmaxIni << "\n";
-  cout << "wminIni wmaxIni " << deg00(wminIni) << " " << deg00(wmaxIni) << "\n";
-  cout << "strategy " << strategy << "\n\n";
-#endif
+  #if DEBUG_INTERACTIVE
+    cout << "CDL debug interactive\n\n";
+    cout << "current v, w [mm/s, deg/s]\n";
+    cin >> v;
+    cin >> w;
+    w = rad00(w);
+    cout << "current pos x, y, a [mm,mm,deg]\n";
+    cin >> posX;
+    cin >> posY;
+    cin >> posA;
+    posA = rad00(posA);
+    cout << "we set the following parameters:\n\n";
+    cout << "vminIni vmaxIni " << vminIni << " " << vmaxIni << "\n";
+    cout << "wminIni wmaxIni " << deg00(wminIni) << " " << deg00(wmaxIni) << "\n";
+    cout << "strategy " << strategy << "\n\n";
+  #endif
 
-#if DEBUG_VW_WINDOW
-  FILE *file;
-  FILE *eval;
-  char filenameVW[100];
-  char filenameScan[100];
-  char filenameEval[100];
-  static int fileNumber=0;
+  #if DEBUG_VW_WINDOW
+    FILE *file;
+    FILE *eval;
+    char filenameVW[100];
+    char filenameScan[100];
+    char filenameEval[100];
+    static int fileNumber=0;
 
-  sprintf(filenameVW,"vwwindow%d.dbg",fileNumber);
-  sprintf(filenameScan,"vwscan%d.dbg",fileNumber);
-  sprintf(filenameEval,"vweval%d.dbg",fileNumber);
-  fileNumber++;
-#endif
+    sprintf(filenameVW,"vwwindow%d.dbg",fileNumber);
+    sprintf(filenameScan,"vwscan%d.dbg",fileNumber);
+    sprintf(filenameEval,"vweval%d.dbg",fileNumber);
+    fileNumber++;
+  #endif
 
   // preparations for the following computations
   local_cdl_v_rot_min  = cdl_v_rot_min*M_PI/180.0;
@@ -1609,18 +1609,18 @@ int CdlLookupClass::calculateSpeedValues(
   iwmin = (int)(floor((wmin-local_cdl_v_rot_min)/local_cdl_v_rot_step+0.5));
   iwmax = (int)(floor((wmax-local_cdl_v_rot_min)/local_cdl_v_rot_step+0.5));
 
-#if DEBUG_VW_WINDOW
-  currentScan.save(filenameScan);
-  file=fopen(filenameVW,"w");
-  if (file!=NULL)
-    {
-      fprintf(file,"vmin vmax wmin wmax %f %f %f %f\n",
-              vmin,vmax,deg00(wmin),deg00(wmax));
-      fprintf(file,"ivmin ivmax iwmin iwmax %d %d %d %d\n",
-              ivmin,ivmax,iwmin,iwmax);
-      fprintf(file,"goalX goalY %f %f\n",goalX,goalY);
-    }
-#endif
+  #if DEBUG_VW_WINDOW
+    currentScan.save(filenameScan);
+    file=fopen(filenameVW,"w");
+    if (file!=NULL)
+      {
+        fprintf(file,"vmin vmax wmin wmax %f %f %f %f\n",
+                vmin,vmax,deg00(wmin),deg00(wmax));
+        fprintf(file,"ivmin ivmax iwmin iwmax %d %d %d %d\n",
+                ivmin,ivmax,iwmin,iwmax);
+        fprintf(file,"goalX goalY %f %f\n",goalX,goalY);
+      }
+  #endif
 
   // extract the relevant curvature indices
   indexCurvature=0;
@@ -1637,23 +1637,23 @@ int CdlLookupClass::calculateSpeedValues(
         }
     }
 
-#if DEBUG_VW_WINDOW
-  if (file!=NULL)
-    {
-      for (vi=ivmin;vi<=ivmax;vi++)
-        {
-          for (wi=iwmin;wi<=iwmax;wi++)
-            {
-              fprintf(file,"vi wi v w ci %d %d %f %f %d\n",
-                      vi,
-                      wi,
-                      CDL_V_TRA_MIN+vi*CDL_V_TRA_STEP,
-                      deg00(local_cdl_v_rot_min+wi*local_cdl_v_rot_step),
-                      indexVW[vi][wi]);
-            }
-        }
-    }
-#endif
+  #if DEBUG_VW_WINDOW
+    if (file!=NULL)
+      {
+        for (vi=ivmin;vi<=ivmax;vi++)
+          {
+            for (wi=iwmin;wi<=iwmax;wi++)
+              {
+                fprintf(file,"vi wi v w ci %d %d %f %f %d\n",
+                        vi,
+                        wi,
+                        CDL_V_TRA_MIN+vi*CDL_V_TRA_STEP,
+                        deg00(local_cdl_v_rot_min+wi*local_cdl_v_rot_step),
+                        indexVW[vi][wi]);
+              }
+          }
+      }
+  #endif
 
 //  for(int i=0;i<CDL_MAX_CURVATURE;i++)
 // {
@@ -1661,36 +1661,36 @@ int CdlLookupClass::calculateSpeedValues(
 // }
 
 //////////////////////////////////////////////////////
-#ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
-	img = cvCreateImage( cvSize(pixelX, pixelY), IPL_DEPTH_8U, 3 );
-	//TODO color of image
-	cvSet(img, cvScalar(255, 255, 255));
+  #ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
+    img = cvCreateImage( cvSize(pixelX, pixelY), IPL_DEPTH_8U, 3 );
+    //TODO color of image
+    cvSet(img, cvScalar(255, 255, 255));
 
 
-	if(strategy == CDL_STRATEGY_15){
-		drawCdlContour(img, cdl_c_x_max, cdl_c_y_min, cdl_to_pixel_scale, CV_RGB(0, 255, 0));
-	} else {
-		drawCdlContour(img, cdl_c_x_max, cdl_c_y_min, cdl_to_pixel_scale, CV_RGB(255, 0, 0));
-	}
+    if(strategy == CDL_STRATEGY_15){
+      drawCdlContour(img, cdl_c_x_max, cdl_c_y_min, cdl_to_pixel_scale, CV_RGB(0, 255, 0));
+    } else {
+      drawCdlContour(img, cdl_c_x_max, cdl_c_y_min, cdl_to_pixel_scale, CV_RGB(255, 0, 0));
+    }
 
-	// show robot 0|0
-	cvCircle(img, 
-		cvPoint(
-			-cdl_c_y_min * cdl_to_pixel_scale,
-			cdl_c_x_max * cdl_to_pixel_scale // y value
-		       ),
-		dotsize, 
-		CV_RGB(255, 0, 0), 
-		fill);
+    // show robot 0|0
+    cvCircle(img, 
+      cvPoint(
+        -cdl_c_y_min * cdl_to_pixel_scale,
+        cdl_c_x_max * cdl_to_pixel_scale // y value
+            ),
+      dotsize, 
+      CV_RGB(255, 0, 0), 
+      fill);
 
-	for(int x = 0; x < pixelX; x += gridsize) {
-		for(int y = 0; y < pixelY; y += gridsize) {
-			// show grid:
-			cvRectangle(img, cvPoint(x, y), cvPoint(x + gridsize, y + gridsize), CV_RGB(128, 128, 128), 1);
-			//cvCircle(img, cvPoint(x, y), 1, CV_RGB(0, 255, 0), 1);
-		}
-	}
-#endif
+    for(int x = 0; x < pixelX; x += gridsize) {
+      for(int y = 0; y < pixelY; y += gridsize) {
+        // show grid:
+        cvRectangle(img, cvPoint(x, y), cvPoint(x + gridsize, y + gridsize), CV_RGB(128, 128, 128), 1);
+        //cvCircle(img, cvPoint(x, y), 1, CV_RGB(0, 255, 0), 1);
+      }
+    }
+  #endif
 
 
 //////////////////////////////////////////////////////
@@ -2073,18 +2073,18 @@ ss << std::setw(3) << std::setfill('0') << "cdl-out-" << imgCntTMP++ << ".jpg";
 // }
   //////////////////////////////////////////////////////////////////////////////////
 
-#if DEBUG_VW_WINDOW
-  if (file!=NULL)
-    {
-      for (li=0;li<indexCurvature;li++)
-        {
-          fprintf(file,"index distance angle %d %d %f\n",
-                  indexList[li],
-                  distanceList[indexList[li]],
-                  deg00((double)alphaList[indexList[li]]/1000));
-        }
-    }
-#endif
+  #if DEBUG_VW_WINDOW
+    if (file!=NULL)
+      {
+        for (li=0;li<indexCurvature;li++)
+          {
+            fprintf(file,"index distance angle %d %d %f\n",
+                    indexList[li],
+                    distanceList[indexList[li]],
+                    deg00((double)alphaList[indexList[li]]/1000));
+          }
+      }
+  #endif
 
 
   // ------------------------------------------------------
@@ -2207,15 +2207,15 @@ ss << std::setw(3) << std::setfill('0') << "cdl-out-" << imgCntTMP++ << ".jpg";
         }
     }
 
-#if DEBUG_VW_WINDOW
-  if (file!=NULL)
-    {
-      for (i=0;i<CDL_MAX_CURVATURE;i++)
-        {
-          fprintf(file,"curvature %d: flag %d wanted %d\n",i,indexFlag[i],indexWanted[i]);
-        }
-    }
-#endif
+  #if DEBUG_VW_WINDOW
+    if (file!=NULL)
+      {
+        for (i=0;i<CDL_MAX_CURVATURE;i++)
+          {
+            fprintf(file,"curvature %d: flag %d wanted %d\n",i,indexFlag[i],indexWanted[i]);
+          }
+      }
+  #endif
 
 //
 //
@@ -2335,17 +2335,17 @@ ss << std::setw(3) << std::setfill('0') << "cdl-out-" << imgCntTMP++ << ".jpg";
 	  }
 
 
-#ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
-	  show_px_color(pathNavGoalPoint_x, pathNavGoalPoint_y, CV_RGB(255, 0, 0)); // alte transformiert = ungerastert/kontinuierliche werte
-#endif
+  #ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
+      show_px_color(pathNavGoalPoint_x, pathNavGoalPoint_y, CV_RGB(255, 0, 0)); // alte transformiert = ungerastert/kontinuierliche werte
+  #endif
 
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-	if(COMP->cdlLookupdebug.is_open()){
-		COMP->cdlLookupdebug << "pathNavStartX: "<<pathNavStartX<<" pathNavStartY "<<pathNavStartY<< " pathNavGoalX "<<pathNavGoalX<<" pathNavGoalY " <<pathNavGoalY<<std::endl;
-		COMP->cdlLookupdebug << "closestPoint_x: "<<closestPoint_x<<" closestPoint_y "<<closestPoint_y<<std::endl;
-		COMP->cdlLookupdebug << "pathNavGoalPoint_x: "<<pathNavGoalPoint_x<<" pathNavGoalPoint_y "<<pathNavGoalPoint_y<<std::endl;
-	}
-#endif
+  #if DEBUG_CDL_LOOKUP_FILE_OUT
+    if(COMP->cdlLookupdebug.is_open()){
+      COMP->cdlLookupdebug << "pathNavStartX: "<<pathNavStartX<<" pathNavStartY "<<pathNavStartY<< " pathNavGoalX "<<pathNavGoalX<<" pathNavGoalY " <<pathNavGoalY<<std::endl;
+      COMP->cdlLookupdebug << "closestPoint_x: "<<closestPoint_x<<" closestPoint_y "<<closestPoint_y<<std::endl;
+      COMP->cdlLookupdebug << "pathNavGoalPoint_x: "<<pathNavGoalPoint_x<<" pathNavGoalPoint_y "<<pathNavGoalPoint_y<<std::endl;
+    }
+  #endif
 
   }
 
@@ -2402,1876 +2402,1833 @@ ss << std::setw(3) << std::setfill('0') << "cdl-out-" << imgCntTMP++ << ".jpg";
           vTransAllowed = sqrt(2.0 * dist  * vAccMax);
           vRotAllowed   = sqrt(2.0 * angle * wAccMax);
 
-#if DEBUG_VW_WINDOW
-          if (file!=NULL)
+          #if DEBUG_VW_WINDOW
+            if (file!=NULL)
+              {
+                fprintf(file,"=====\n");
+                fprintf(file,"vtrans vrot             %f %f\n",vtrans,deg00(vrot));
+                fprintf(file,"ci corrected dist angle %d %f %f\n",ci,dist,deg00(angle));
+                fprintf(file,"vAccMax wAccMax         %f %f\n",vAccMax,deg00(wAccMax));
+                fprintf(file,"vtrans vTransAllowed    %f %f\n",vtrans,vTransAllowed);
+                fprintf(file,"vrot   vRotAllowed      %f %f\n",deg00(vrot),
+                        deg00(vRotAllowed));
+              }
+          #endif
+
+          ///////////////////////////////////////////////////////////////////////
+          if(strategy == CDL_STRATEGY_1){
+            if ((abs00(vtrans) <= vTransAllowed) && (abs00(vrot) <= vRotAllowed))
             {
-              fprintf(file,"=====\n");
-              fprintf(file,"vtrans vrot             %f %f\n",vtrans,deg00(vrot));
-              fprintf(file,"ci corrected dist angle %d %f %f\n",ci,dist,deg00(angle));
-              fprintf(file,"vAccMax wAccMax         %f %f\n",vAccMax,deg00(wAccMax));
-              fprintf(file,"vtrans vTransAllowed    %f %f\n",vtrans,vTransAllowed);
-              fprintf(file,"vrot   vRotAllowed      %f %f\n",deg00(vrot),
-                      deg00(vRotAllowed));
+
+            } else {
+              if(indexWantedVWCheck[ci]==1){
+            #ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
+              std::cout<<"vw: ("<< vtrans <<"|"<< vrot <<") is not allowed - distO|dist: ("<<dist_lookup<<"|"<<dist<<") angleO|angle: ("<<angle_lookup<<"|"<<angle<<") vTransAllowed: "<<vTransAllowed<<" vRotAllowed: "<<vRotAllowed<<std::endl;
+            #endif
+              }
             }
-#endif
-
-          ///////////////////////////////////////////////////////////////////////
-	if(strategy == CDL_STRATEGY_1){
-          if ((abs00(vtrans) <= vTransAllowed) && (abs00(vrot) <= vRotAllowed))
-          {
-
-          } else {
-        	  if(indexWantedVWCheck[ci]==1){
-#ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
-        		  std::cout<<"vw: ("<< vtrans <<"|"<< vrot <<") is not allowed - distO|dist: ("<<dist_lookup<<"|"<<dist<<") angleO|angle: ("<<angle_lookup<<"|"<<angle<<") vTransAllowed: "<<vTransAllowed<<" vRotAllowed: "<<vRotAllowed<<std::endl;
-#endif
-        	  }
-
           }
-	}
-          ///////////////////////////////////////////////////////////////////////
-
 
           if ((abs00(vtrans) <= vTransAllowed) && (abs00(vrot) <= vRotAllowed))
           {
 
-          //printf("STRAT v ; w ; dist ; vTransAllowed; vAccMax  -- %5.2f ; %5.2f ; %6.2f ; %6.2f; %6.2f \n", vtrans , vrot, dist, vTransAllowed, vAccMax);
- //         printf(" - - - OK\n");
-              // these velocities are allowed
-
-// factors
-#define BRAKE_SECURITY_FACTOR  1.0
-
-
-
-              //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-              //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-              // now switch depending on the selected strategy
-              //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        	  //TODO marker for eclipse editor
-        	  switch (strategy)
-        	  {
-
-        	  case CDL_STRATEGY_1:
-			  {
-
-				  if(indexWantedVWCheck[ci]==1){
-					  costHeading=1.0-abs00(angle00(desiredRotationalSpeed-vrot))/wmaxIni;
-					  costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-					  alpha1 = 1;
-					  alpha2 = 1;
-					  alpha3 = 1;
-					  costValue = alpha1*costSpeed + alpha3*costHeading;
-#ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
-					  std::cout<<ci<<" - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<" cost: "<<costValue<<"              v:"<<v<<" w:"<<w<<std::endl;
-#endif
-				  } else {
-//					  std::cout<<ci<<" not wanted - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<std::endl;
-					  costValue = 0;
-				  }
-
-				  break;
-			  }
-
-        	  case CDL_STRATEGY_16: {
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        			  if(COMP->cdlLookupdebug.is_open()){
-        				  COMP->cdlLookupdebug <<" V: "<<vtrans<<" W: "<<vrot;
-        				  COMP->cdlLookupdebug <<" desV: "<<desiredTranslationalSpeed<<" desW: "<<desiredRotationalSpeed;
-        			  }
-#endif
-
-    			  if(vtrans > desiredTranslationalSpeed){
-    				  costValue = 0;
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        		  if(COMP->cdlLookupdebug.is_open()){
-        			  COMP->cdlLookupdebug << " ZERO Cost: "<<costValue<<std::endl;
-        		  }
-#endif
-    			  } else {
-
-
-//    				  //calculate if a speed combination brings us closer to the goal
-//    				  double current_distGoalPoint = std::sqrt( square(pathNavGoalX)+square(pathNavGoalY));
-//
-//    				  // prevent the robot from moving away from the goal!
-//					  double res_x,res_y;
-//					  if(vrot != 0){
-//						  double r = (vtrans/1000.0) / vrot;
-//						  r = r*1000.0;
-//						  double icc_x = 0; double icc_y = r;
-//						  if(icc_y<0){
-//							r = abs00(r);
-//						  }
-//						  //calculate point on line
-//						  double s, alpha, h,ys, r_m;
-//						  r_m = r/1000.0;
-//						  s = vtrans * deltat;
-//						  alpha = s/r;
-//						  h = sin(alpha) * r_m;  ys = cos(alpha) * r_m;
-//
-//						  res_x = h*1000;
-//						  if(icc_y<0){
-//							  res_y = icc_y + (ys*1000.0);
-//						  } else {
-//							  res_y = icc_y - (ys*1000.0);
-//						  }
-//					  } else {
-//
-//						  double s;
-//						  s = vtrans * deltat;
-//						  res_x = s;
-//						  res_y = 0;
-//					  }
-//
-//    				  //std::cout<<"res_x: "<<res_x<<" res_y: "<<res_y<<std::endl;
-//
-//    				  double predicted_pose_goaldist = std::sqrt( square(res_x-pathNavGoalX)+square(res_y-pathNavGoalY) );
-//    				  double diff_dist = current_distGoalPoint - predicted_pose_goaldist;
-//    				  if(diff_dist>0){
-//    					  costDist = 1.0-diff_dist/current_distGoalPoint;
-//    				  } else {
-//    					  costDist = 0;
-//    				  }
-
-    				  costDist = 0;
-
-    				  //costSpeed=abs00(desiredTranslationalSpeed-vtrans);
-					  costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-					  alpha1=0.25;
-					  alpha2=1.0;
-					  alpha3=0.5;
-					  double costRot = 1.0-abs00(vrot - desiredRotationalSpeed)/wmaxIni;
-					  costValue=alpha1*costSpeed+alpha2*costRot+alpha3*costDist;
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        		  if(COMP->cdlLookupdebug.is_open()){
-    				  COMP->cdlLookupdebug <<" costSpeed: "<<costSpeed<<" costRot: "<<costRot<<" costDist: "<<costDist;
-        			  COMP->cdlLookupdebug << " Cost: "<<costValue<<std::endl;
-        		  }
-#endif
-
-    			  }
-
-
-
-        		  break;
-        	  }
-
-        	  //<startegy added by mlutz; 2015-05-05>; used for path based navigation
-        	  //PATH NAV
-        	  case CDL_STRATEGY_15: {
-        		  double costGoalDist = 0.0;
-
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        			  if(COMP->cdlLookupdebug.is_open()){
-        				  COMP->cdlLookupdebug <<" V: "<<vtrans<<" W: "<<vrot;
-        			  }
-#endif
-
-
-        		  if(vrot == 0){
-        			  double a,b,c,xig,yig;
-        			  int goalLineEquationRes = cdl_ab_axbyc(pathNavStartX,pathNavStartY,pathNavGoalX,pathNavGoalY,a,b,c);
-        			  if(goalLineEquationRes != 0){
-        				  costValue = 0;
-        				  std::cout<<"ERROR: was not able to calculate goal line equation!"<<std::endl;
-        			  } else {
-        				  int res = cdl_line_intersection(a,b,-c,0.0,1.0,0.0,xig,yig);
-        				  if(res == 0 ){
-        					  double distP1 = std::sqrt( square(xig-pathNavGoalPoint_x)+square(yig-pathNavGoalPoint_y) );
-
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        					  if(COMP->cdlLookupdebug.is_open()){
-        						  COMP->cdlLookupdebug <<" Line Inter: "<<xig<<" "<<yig << " Dist: "<<distP1;
-        					  }
-#endif
-
-        					  costGoalDist = min00(1/distP1,1.0);
-
-        				  } else if (res == 1){
-        					  //equal line --> goal is directly on line!
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        					  if(COMP->cdlLookupdebug.is_open()){
-        						  COMP->cdlLookupdebug <<" GOAL ON LINE!";
-        					  }
-#endif
-
-        					  costValue = 1000;
-        				  } else {
-        					  //parallel line
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        					  if(COMP->cdlLookupdebug.is_open()){
-        						  COMP->cdlLookupdebug <<" GOAL ON parallel LINE!";
-        					  }
-#endif
-
-        					  costValue = 0;
-        				  }
-        			  }
-        		  } else {
-
-
-        			  double r = vtrans/1000.0 / vrot;
-        			  r = r*1000.0;
-
-        			  double icc_x = 0;
-        			  double icc_y = r;
-
-        			  double x1i,y1i,x2i,y2i;
-        			  int nrIntersections;
-
-        			  intersectionsCircleLine(icc_x, icc_y,r,
-        					  pathNavGoalPoint_x,pathNavGoalPoint_y,pathNavGoalX,pathNavGoalY,
-        					  x1i,y1i,x2i,y2i,
-        					  nrIntersections);
-
-
-        			  if(nrIntersections>0){
-        				  if(nrIntersections == 1){
-
-
-        					  double distP1 = std::sqrt( square(x1i-pathNavGoalPoint_x)+square(y1i-pathNavGoalPoint_y) );
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        					  if(COMP->cdlLookupdebug.is_open()){
-        						  COMP->cdlLookupdebug <<" Inter 1: "<<x1i<<" "<<y1i << " Dist: "<<distP1;
-        					  }
-#endif
-
-        					  costGoalDist = min00(1/distP1,1.0);
-
-
-        				  } else {
-        					  double distP1 = std::sqrt( square(x1i-pathNavGoalPoint_x)+square(y1i-pathNavGoalPoint_y) );
-        					  double distP2 = std::sqrt( square(x2i-pathNavGoalPoint_x)+square(y2i-pathNavGoalPoint_y) );
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        					  if(COMP->cdlLookupdebug.is_open()){
-        						  COMP->cdlLookupdebug <<" Inter 1: "<<x1i<<" "<<y1i << " Dist: "<<distP1 << " Inter 2: "<<x2i<<" "<<y2i << " Dist: "<<distP2;
-        					  }
-#endif
-        					  if(distP1<distP2){
-        						  costGoalDist = min00(1/distP1,1.0);
-
-        					  } else {
-        						  costGoalDist = min00(1/distP2,1.0);
-        					  }
-        				  }
-
-        			  } else {
-        				  costGoalDist = 0;
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        				  if(COMP->cdlLookupdebug.is_open()){
-        					  COMP->cdlLookupdebug << " No intersection!";
-        				  }
-#endif
-        			  }
-        		  }
-
-
-        		  // prevent the robot from moving away from the goal!
-        		  double res_x,res_y;
-
-        		  if(vrot != 0){
-
-        			  double r = (vtrans/1000.0) / vrot;
-        			  r = r*1000.0;
-        			  double icc_x = 0;
-        			  double icc_y = r;
- //       			  COMP->cdlLookupdebug <<" icc_y: "<<icc_y;
-				  if(icc_y<0){
-					r = abs00(r);
-				  }
-
-        			  //calculate point on line
-        			  double s, alpha, h,ys, r_m;
-        			  r_m = r/1000.0;
-        			  s = vtrans * deltat;
-        			  alpha = s/r;
-        			  h = sin(alpha) * r_m;
-        			  ys = cos(alpha) * r_m;
-
-   //     			  COMP->cdlLookupdebug <<" deltat: "<<deltat<<" s: "<<s<<" alpha: "<<alpha<<" h: "<<h<<" ys: "<<ys;
-
-        			  res_x = h*1000;
-        			  if(icc_y<0){
-        				  res_y = icc_y + (ys*1000.0);
-        			  } else {
-        				  res_y = icc_y - (ys*1000.0);
-        			  }
-
-        		  } else {
-
-        			  double s;
-        			  s = vtrans * deltat;
-        			  res_x = s;
-        			  res_y = 0;
-        		  }
-
-        		  //std::cout<<"res_x: "<<res_x<<" res_y: "<<res_y<<std::endl;
-
-        		  double predicted_pose_goaldist = std::sqrt( square(res_x-pathNavGoalPoint_x)+square(res_y-pathNavGoalPoint_y) );
-        		  double current_pose_goaldist = std::sqrt( square(pathNavGoalPoint_x)+square(pathNavGoalPoint_y) );
-
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        		  if(COMP->cdlLookupdebug.is_open()){
-//				COMP->cdlLookupdebug << " pathNavGoalPoint: "<<pathNavGoalPoint_x<<"|"<<pathNavGoalPoint_x;
-//				COMP->cdlLookupdebug << " predPose: "<<res_x<<"|"<<res_y;
-				COMP->cdlLookupdebug << " curPosDist: "<<current_pose_goaldist<<" predPosDist: "<<predicted_pose_goaldist;
-        			  if(current_pose_goaldist>predicted_pose_goaldist){
-        				  COMP->cdlLookupdebug << "DIR OK! ";
-        			  } else {
-        				  COMP->cdlLookupdebug << "DIR FALSE! ";
-        			  }
-        		  }
-#endif
-        		  if(current_pose_goaldist>predicted_pose_goaldist){
-
-        			  if(vtrans > desiredTranslationalSpeed){
-        				  costValue = 0;
-        			  } else {
-
-						  costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-
-						  alpha1=0.25;
-						  alpha2=1.0;
-						  costValue=alpha1*costSpeed+alpha2*costGoalDist;
-        			  }
-
-        		  } else {
-
-        			  costValue = 0;
-
-
-        		  }
-
-#if DEBUG_CDL_LOOKUP_FILE_OUT
-        		  if(COMP->cdlLookupdebug.is_open()){
-    				  COMP->cdlLookupdebug << " costGoalDist: "<<costGoalDist<< " costSpeed "<<costSpeed;
-        			  COMP->cdlLookupdebug << " Cost: "<<costValue<<std::endl;
-        		  }
-#endif
-
-
-
-
-
-        		  break;
-        	  }
-
-
-
-
-
-
-
-                case CDL_STRATEGY_10:
-                  // ------------------------------------------------
-                  // - assumes absolute current position
-                  // - assumes absolute goal position
-                  //
-                  // - calculate position when assuming maximum
-                  //   allowed decceleration on selected curvature
-                  //   for determining all the relevant cost values
-                  // ------------------------------------------------
-
-                  //
-                  // calculate stop position
-                  //
-                  if (abs00(vrot) <= vRotStepHelp)
-                    {
-                      //
-                      //
-                      // drive straight forward
-                      //
-                      //
-                      if (abs00(vtrans) <= vTransStepHelp)
-                        {
-                          // no movement at all, but set brakeDist to an
-                          // uncritical value to get the heading direction
-                          // for determining the costGoal value
-                          brakeDist  = 1.0;
-                          brakeAngle = 0.0;
-                        }
-                      else
-                        {
-                          // robot moves straight forward
-                          brakeDist  = BRAKE_SECURITY_FACTOR*(vtrans*vtrans)/(2*vAccMax);
-                          brakeAngle = 0.0;
-                        }
-                      posXstop     = posX+brakeDist*cos(posA);
-                      posYstop     = posY+brakeDist*sin(posA);
-                      posAstop     = angle00(posA);
-
-                      // intersection of circle around goal position
-                      // and line through current position and goal position
-                      status = intersectionsCircleLine(
-                                 goalX,goalY,cdl_capture_distance,
-                                 posX,posY,posXstop,posYstop,
-                                 x1i,y1i,x2i,y2i,
-                                 nrIntersections);
-                      if ((status == 0) && (nrIntersections > 0))
-                        {
-                          // now check whether the intersections are in
-                          // driving direction
-                          double alpha1,alpha2,alpha;
-
-                          alpha1 = atan2(posYstop-posY,posXstop-posX);
-                          alpha2 = atan2(y1i-posY,x1i-posX);
-                          alpha  = angle00(alpha2 - alpha1);
-
-                          if ((alpha > -M_PI) && (alpha < M_PI))
-                            {
-                              // correct heading to hit the goal point therefore
-                              // driving straight forward allows to hit the goal
-                              costPassing = 1;
-                            };
-                        }
-                      else
-                        {
-                          // goal point is in reverse direction to current heading or
-                          // is too far away from driving direction
-                          costPassing = 0;
-                        }
-
-                      // calculate whether goal point hits the goal position
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-#if DEBUG_VW_WINDOW
-                      if (file!=NULL)
-                        {
-                          fprintf(file,"drive straight forward\n");
-                          fprintf(file,"brakeDist brakeAngle %f %f\n",
-                                  brakeDist,deg00(brakeAngle));
-                          fprintf(file,"stopPosX stopPosY stopPosA %f %f %f\n",
-                                  posXstop,posYstop,deg00(posAstop));
-                          fprintf(file,"hitDistance hitAngle %f %f\n",
-                                  hitDistance,deg00(hitAngle));
-                          fprintf(file,"costHit costPassing %f %f\n",
-                                  costHit,costPassing);
-                        }
-#endif
-
+          //  printf("STRAT v ; w ; dist ; vTransAllowed; vAccMax  -- %5.2f ; %5.2f ; %6.2f ; %6.2f; %6.2f \n", vtrans , vrot, dist, vTransAllowed, vAccMax);
+          //         printf(" - - - OK\n");
+          // these velocities are allowed
+
+          // factors
+          #define BRAKE_SECURITY_FACTOR  1.0
+
+
+
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          // now switch depending on the selected strategy
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          //TODO marker for eclipse editor
+          switch (strategy)
+          {
+
+          case CDL_STRATEGY_1:
+          {
+
+            if(indexWantedVWCheck[ci]==1){
+              costHeading=1.0-abs00(angle00(desiredRotationalSpeed-vrot))/wmaxIni;
+              costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+              alpha1 = 1;
+              alpha2 = 1;
+              alpha3 = 1;
+              costValue = alpha1*costSpeed + alpha3*costHeading;
+              #ifdef WITH_OPENCV_CDL_LOOKUP_DEBUG
+                std::cout<<ci<<" - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<" cost: "<<costValue<<"              v:"<<v<<" w:"<<w<<std::endl;
+              #endif
+            } else {
+              //  std::cout<<ci<<" not wanted - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<std::endl;
+              costValue = 0;
+            }
+
+            break;
+          }
+
+          case CDL_STRATEGY_16: {
+            #if DEBUG_CDL_LOOKUP_FILE_OUT
+              if(COMP->cdlLookupdebug.is_open()){
+                COMP->cdlLookupdebug <<" V: "<<vtrans<<" W: "<<vrot;
+                COMP->cdlLookupdebug <<" desV: "<<desiredTranslationalSpeed<<" desW: "<<desiredRotationalSpeed;
+              }
+            #endif
+
+            if(vtrans > desiredTranslationalSpeed){
+              costValue = 0;
+              #if DEBUG_CDL_LOOKUP_FILE_OUT
+                if(COMP->cdlLookupdebug.is_open()){
+                  COMP->cdlLookupdebug << " ZERO Cost: "<<costValue<<std::endl;
+                }
+              #endif
+            } else {
+              //	//  calculate if a speed combination brings us closer to the goal
+              //	//  double current_distGoalPoint = std::sqrt( square(pathNavGoalX)+square(pathNavGoalY));
+              //  // prevent the robot from moving away from the goal!
+              //  double res_x,res_y;
+              //  if(vrot != 0){
+              //	  double r = (vtrans/1000.0) / vrot;
+              //	  r = r*1000.0;
+              //	  double icc_x = 0; double icc_y = r;
+              //	  if(icc_y<0){
+              //		r = abs00(r);
+              //	  }
+              //	  //calculate point on line
+              //	  double s, alpha, h,ys, r_m;
+              //	  r_m = r/1000.0;
+              //	  s = vtrans * deltat;
+              //	  alpha = s/r;
+              //	  h = sin(alpha) * r_m;  ys = cos(alpha) * r_m;
+              //          //	  res_x = h*1000;
+              //	  if(icc_y<0){
+              //		  res_y = icc_y + (ys*1000.0);
+              //	  } else {
+              //		  res_y = icc_y - (ys*1000.0);
+              //	  }
+              //  } else {
+              //          //	  double s;
+              //	  s = vtrans * deltat;
+              //	  res_x = s;
+              //	  res_y = 0;
+              //  }
+              //  //  std::cout<<"res_x: "<<res_x<<" res_y: "<<res_y<<std::endl;
+              //  //  double predicted_pose_goaldist = std::sqrt( square(res_x-pathNavGoalX)+square(res_y-pathNavGoalY) );
+              //			  double diff_dist = current_distGoalPoint - predicted_pose_goaldist;
+              //			  if(diff_dist>0){
+              //				  costDist = 1.0-diff_dist/current_distGoalPoint;
+              //			  } else {
+              //				  costDist = 0;
+              //			  }
+
+              costDist = 0;
+
+              //costSpeed=abs00(desiredTranslationalSpeed-vtrans);
+              costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+              alpha1=0.25;
+              alpha2=1.0;
+              alpha3=0.5;
+              double costRot = 1.0-abs00(vrot - desiredRotationalSpeed)/wmaxIni;
+              costValue=alpha1*costSpeed+alpha2*costRot+alpha3*costDist;
+              #if DEBUG_CDL_LOOKUP_FILE_OUT
+                if(COMP->cdlLookupdebug.is_open()){
+                COMP->cdlLookupdebug <<" costSpeed: "<<costSpeed<<" costRot: "<<costRot<<" costDist: "<<costDist;
+                  COMP->cdlLookupdebug << " Cost: "<<costValue<<std::endl;
+                }
+              #endif
+            }
+            break;
+          }
+
+          //<startegy added by mlutz; 2015-05-05>; used for path based navigation
+          //PATH NAV
+          case CDL_STRATEGY_15: {
+            double costGoalDist = 0.0;
+
+            #if DEBUG_CDL_LOOKUP_FILE_OUT
+              if(COMP->cdlLookupdebug.is_open()){
+                COMP->cdlLookupdebug <<" V: "<<vtrans<<" W: "<<vrot;
+              }
+            #endif
+
+
+            if(vrot == 0){
+              double a,b,c,xig,yig;
+              int goalLineEquationRes = cdl_ab_axbyc(pathNavStartX,pathNavStartY,pathNavGoalX,pathNavGoalY,a,b,c);
+              if(goalLineEquationRes != 0){
+                costValue = 0;
+                std::cout<<"ERROR: was not able to calculate goal line equation!"<<std::endl;
+              } else {
+                int res = cdl_line_intersection(a,b,-c,0.0,1.0,0.0,xig,yig);
+                if(res == 0 ){
+                  double distP1 = std::sqrt( square(xig-pathNavGoalPoint_x)+square(yig-pathNavGoalPoint_y) );
+
+            #if DEBUG_CDL_LOOKUP_FILE_OUT
+              if(COMP->cdlLookupdebug.is_open()){
+                COMP->cdlLookupdebug <<" Line Inter: "<<xig<<" "<<yig << " Dist: "<<distP1;
+              }
+            #endif
+
+                  costGoalDist = min00(1/distP1,1.0);
+
+                } else if (res == 1){
+                  //equal line --> goal is directly on line!
+                  #if DEBUG_CDL_LOOKUP_FILE_OUT
+                    if(COMP->cdlLookupdebug.is_open()){
+                      COMP->cdlLookupdebug <<" GOAL ON LINE!";
                     }
-                  else if (abs00(vtrans) <= vTransStepHelp)
-                    {
-                      //
-                      //
-                      // turn in place
-                      //
-                      //
-                      brakeDist       = 0.0;
-                      brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
-                      if (vrot < 0.0) brakeAngle *= -1.0;
-                      posXstop        = posX;
-                      posYstop        = posY;
-                      posAstop        = angle00(posA+brakeAngle);
-                      deltaX          = goalX - posXstop;
-                      deltaY          = goalY - posYstop;
-                      passingDistance = sqrt(deltaX*deltaX+deltaY*deltaY);
+                  #endif
 
-                      if (passingDistance<cdl_capture_distance)
-                        {
-                          // turning in place allows to hit the goal since the
-                          // robot is already within the circle around the goal
-                          costPassing = 1;
-                        }
-                      else
-                        {
-                          costPassing = 0;
-                        }
-
-                      // calculate whether goal point hits the goal position
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-#if DEBUG_VW_WINDOW
-                      if (file!=NULL)
-                        {
-                          fprintf(file,"turn in place\n");
-                          fprintf(file,"brakeDist brakeAngle %f %f\n",
-                                  brakeDist,deg00(brakeAngle));
-                          fprintf(file,"costHit costPassing %f %f\n",
-                                  costHit,costPassing);
-                        }
-#endif
-
+                  costValue = 1000;
+                } else {
+                  //parallel line
+                  #if DEBUG_CDL_LOOKUP_FILE_OUT
+                    if(COMP->cdlLookupdebug.is_open()){
+                      COMP->cdlLookupdebug <<" GOAL ON parallel LINE!";
                     }
-                  else if (vrot > 0.0)
-                    {
-                      //
-                      //
-                      // drive on curvature, left
-                      //
-                      //
-                      brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
-                      radius          = vtrans/vrot;
-                      posXm           = posX  - radius * sin(posA);
-                      posYm           = posY  + radius * cos(posA);
-                      posXstop        = posXm + radius * sin(posA+brakeAngle);
-                      posYstop        = posYm - radius * cos(posA+brakeAngle);
-                      posAstop        = angle00(posA+brakeAngle);
+                  #endif
 
-                      deltaX          = posXm - goalX;
-                      deltaY          = posYm - goalY;
-                      passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
-                      if (passingDistance<cdl_capture_distance)
-                        {
-                          // the considered path goes through the specified
-                          // goal point within a reasonable bound
-                          costPassing = 1;
-                        }
-                      else
-                        {
-                          costPassing = 0;
-                        }
-
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-#if DEBUG_VW_WINDOW
-                      if (file!=NULL)
-                        {
-                          fprintf(file,"drive on curvature, left\n");
-                          fprintf(file,"brakeAngle %f\n",
-                                  deg00(brakeAngle));
-                          fprintf(file,"stopPosX stopPosY stopPosA %f %f %f\n",
-                                  posXstop,posYstop,deg00(posAstop));
-                          fprintf(file,"posXm posYm deltx delty radius %f %f %f %f %f\n",
-                                  posXm,posYm,deltaX,deltaY,radius);
-                          fprintf(file,"hitDistance hitAngle %f %f\n",
-                                  hitDistance,deg00(hitAngle));
-                          fprintf(file,"costHit costPassing %f %f\n",
-                                  costHit,costPassing);
-                        }
-#endif
-                    }
-                  else
-                    {
-                      //
-                      //
-                      // drive on curvature, right
-                      //
-                      //
-                      brakeAngle      = -BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
-                      radius          = -vtrans/vrot;   // assume positive radius
-                      posXm           = posX  + radius * sin(posA);
-                      posYm           = posY  - radius * cos(posA);
-                      posXstop        = posXm - radius * sin(posA+brakeAngle);
-                      posYstop        = posYm + radius * cos(posA+brakeAngle);
-                      posAstop        = angle00(posA+brakeAngle);
-                      deltaX          = posXm - goalX;
-                      deltaY          = posYm - goalY;
-                      passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
-
-                      if (passingDistance<cdl_capture_distance)
-                        {
-                          // the considered path goes through the specified
-                          // goal point within a reasonable bound
-                          costPassing = 1;
-                        }
-                      else
-                        {
-                          costPassing = 0;
-                        }
-
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-#if DEBUG_VW_WINDOW
-                      if (file!=NULL)
-                        {
-                          fprintf(file,"drive on curvature, right\n");
-                          fprintf(file,"brakeAngle %f\n",
-                                  deg00(brakeAngle));
-                          fprintf(file,"stopPosX stopPosY stopPosA %f %f %f\n",
-                                  posXstop,posYstop,deg00(posAstop));
-                          fprintf(file,"posXm posYm deltx delty radius %f %f %f %f %f\n",
-                                  posXm,posYm,deltaX,deltaY,radius);
-                          fprintf(file,"hitDistance hitAngle %f %f\n",
-                                  hitDistance,deg00(hitAngle));
-                          fprintf(file,"costHit costPassing %f %f\n",
-                                  costHit,costPassing);
-                        }
-#endif
-                    }
-
-                  deltaX = posX - goalX;
-                  deltaY = posY - goalY;
-                  goalDistance = sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                  //
-                  //
-                  // evaluation functions
-                  //
-                  //
-                  switch (evalFunc)
-                    {
-                    case CDL_EVAL_STANDARD:
-                      //
-                      //
-                      //
-                      break;
-                    case CDL_EVAL_APPROACH_OBJECT:
-                      //
-                      //
-                      //
-                      break;
-                    case CDL_EVAL_PASSING:
-                      //
-                      // std::cout << "CDL_EVAL_PASSING: posX = " << posX << "; goalX = " << goalX <<"; posY = "<<posY<< "; goalY = "<< goalY <<  "; goalDistance = " << goalDistance << std::endl;
-                      //
-                      if (goalDistance > rangeFarPassing)
-                        {
-                          desiredTranslationalSpeed = speedFarPassing;
-                        }
-                      else if (goalDistance > rangeMediumPassing)
-                        {
-                          desiredTranslationalSpeed = speedMediumPassing;
-                        }
-                      else
-                        {
-                          desiredTranslationalSpeed = speedNearPassing;
-                        }
-                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-
-                      costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                      if (costSpeed < 0.0) costSpeed = 0.0;
-
-                      costDist=dist/cdl_max_distance;
-                      if (costDist > 1.0) costDist = 1.0;
-
-// if (indexWanted[ci]==0) {
-//   // curvature is not wanted
-//   costValue = 10000.0;
-// } else {
-//   // curvature is wanted
-//   costValue = 20000.0;
-// };
-                      costValue = 0.0;
-//                costValue += 1.0*costSpeed+1.0*costDist+2000.0*costHeading;
-                      costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
-                      costValue += 2*costPassing;
-
-                      if (dist > bonusDistPassing)
-                        {
-                          costValue += 5000.0;
-                        }
-
-                      if ((vtrans > 5.0) && (vtrans < 100.0)) costValue = 0.0;
-                      if (fabs(vtrans) < 5.0)
-                        {
-                          if (vrot >  rad00(10)) vrot =  rad00(10);
-                          if (vrot < -rad00(10)) vrot = -rad00(10);
-                        }
-
-                      alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
-                      if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
-
-
-                      break;
-                    case CDL_EVAL_STOPPING:
-                      //
-                      //
-                      // std::cout << "CDL_EVAL_STOPPING: posX = " << posX << "; goalX = " << goalX <<"; posY = "<<posY<< "; goalY = "<< goalY <<  "; goalDistance = " << goalDistance << std::endl;
-                      //
-                      if (goalDistance > rangeFarStopping)
-                        {
-                          desiredTranslationalSpeed = speedFarStopping;
-                        }
-                      else if (goalDistance > rangeMediumStopping)
-                        {
-                          desiredTranslationalSpeed = speedMediumStopping;
-                        }
-                      else
-                        {
-                          desiredTranslationalSpeed = speedNearStopping;
-                        }
-                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-
-                      costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                      if (costSpeed < 0.0) costSpeed = 0.0;
-
-                      costDist=dist/cdl_max_distance;
-                      if (costDist > 1.0) costDist = 1.0;
-
-// if (indexWanted[ci]==0) {
-//   // curvature is not wanted
-//   costValue = 10000.0;
-// } else {
-//   // curvature is wanted
-//   costValue = 20000.0;
-// };
-
-                      costValue = 0.0;
-//                costValue += 1.0*costSpeed+1.0*costDist+2000.0*costHeading;
-//                costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading; //Lutz
-                      costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
-                      costValue += 2*costHit;
-
-                      if (dist > bonusDistStopping)
-                        {
-                          costValue += 5000.0;
-                        }
-
-                      if ((vtrans > 5.0) && (vtrans < 50.0)) costValue = 0.0;
-                      if (fabs(vtrans) < 5.0)
-                        {
-                          if (vrot >  rad00(10)) vrot =  rad00(10);
-                          if (vrot < -rad00(10)) vrot = -rad00(10);
-                        }
-                      alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
-                      if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
-
-                      break;
-
-
-                    case CDL_EVAL_APPROACH_EXACT:
-
-                      if (indexWanted[ci]==0)
-                        {
-                          // curvature is not wanted
-                          costValue = 10000.0;
-                        }
-                      else
-                        {
-                          // curvature is wanted
-                          costValue = 20000.0;
-                        };
-
-                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-
-                      costDist=dist/cdl_max_distance;
-                      if (costDist > 1.0) costDist = 1.0;
-
-// if (goalDistance > 2500.0) {
-//   desiredTranslationalSpeed = 100.0;
-// } else if (goalDistance > 1000.0) {
-//   desiredTranslationalSpeed = 100.0;
-// } else {
-//   desiredTranslationalSpeed = 50.0;
-// }
-// costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-// if (costSpeed < 0.0) costSpeed = 0.0;
-// costValue += 2000.0*costHeading+1.0*costSpeed+1.0*costDist;
-
-                      if (abs00(vrot) > rad00(30.0)) costValue = 0.0;
-                      if (goalDistance > 1000.0)
-                        {
-                          if ((vtrans<95.0) || (vtrans>105.0)) costValue = 0.0;
-                        }
-                      else
-                        {
-                          if ((vtrans <45.0) || (vtrans>55.0)) costValue = 0.0;
-                        }
-                      costValue += 2000.0*costHeading;
-
-                      break;
-                    default:
-                      costValue = 0.0;
-                      break;
-                    }
-
-
-#if EVAL_FUNC_1
-                  {
-                    double free = 1000.0;
-                    double angle = (60.0*M_PI/180.0);
-
-                    if (hitAngle < -angle) hitAngle=-angle;
-                    if (hitAngle >  angle) hitAngle= angle;
-                    costHeading=1.0-abs00(angle00(hitAngle-vrot))/(2*angle);
-
-                    if (hitDistance > free)
-                      {
-                        desiredTranslationalSpeed = 900.0;
-                      }
-                    else
-                      {
-                        desiredTranslationalSpeed = 200.0;
-                      }
-                    costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-                    costDist=dist/5000.0;
-                    if (costDist>1.0) costDist=1.0;
-
-                    if ((dist > free) && (vtrans>100.0))
-                      {
-                        alpha1=1.0;
-                        alpha2=1.0;
-                        alpha3=2.0;
-                        costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                      }
-                    else
-                      {
-                        alpha1=1.0;
-                        alpha2=1.0;
-                        alpha3=1.0;
-                        costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                      }
-                  }
-#endif
-
-                  //
-                  //
-                  // evaluation function 3
-                  //
-                  //
-#if EVAL_FUNC_3
                   costValue = 0;
-                  if (goalDistance < 500.0)
-                    {
-                      desiredTranslationalSpeed = 50.0;
-                    }
-                  else if (goalDistance < 1000.0)
-                    {
-                      desiredTranslationalSpeed = 100.0;
-//              costValue += costHit*10.0;
-                    }
-                  else
-                    {
-                      desiredTranslationalSpeed = 900.0;
-//              if ((dist > 1000.0) || (angle > rad00(20.0))) costValue += 6;
-//              if (abs00(deg00(hitAngle)) < 10.0) costValue+=3;
-                      costValue += costPassing;
-                    }
+                }
+              }
+            } else {
 
+
+              double r = vtrans/1000.0 / vrot;
+              r = r*1000.0;
+
+              double icc_x = 0;
+              double icc_y = r;
+
+              double x1i,y1i,x2i,y2i;
+              int nrIntersections;
+
+              intersectionsCircleLine(icc_x, icc_y,r,
+                  pathNavGoalPoint_x,pathNavGoalPoint_y,pathNavGoalX,pathNavGoalY,
+                  x1i,y1i,x2i,y2i,
+                  nrIntersections);
+
+
+              if(nrIntersections>0){
+                if(nrIntersections == 1){
+
+
+                  double distP1 = std::sqrt( square(x1i-pathNavGoalPoint_x)+square(y1i-pathNavGoalPoint_y) );
+                  #if DEBUG_CDL_LOOKUP_FILE_OUT
+                    if(COMP->cdlLookupdebug.is_open()){
+                      COMP->cdlLookupdebug <<" Inter 1: "<<x1i<<" "<<y1i << " Dist: "<<distP1;
+                    }
+                  #endif
+
+                  costGoalDist = min00(1/distP1,1.0);
+
+
+                } else {
+                  double distP1 = std::sqrt( square(x1i-pathNavGoalPoint_x)+square(y1i-pathNavGoalPoint_y) );
+                  double distP2 = std::sqrt( square(x2i-pathNavGoalPoint_x)+square(y2i-pathNavGoalPoint_y) );
+                    #if DEBUG_CDL_LOOKUP_FILE_OUT
+                      if(COMP->cdlLookupdebug.is_open()){
+                        COMP->cdlLookupdebug <<" Inter 1: "<<x1i<<" "<<y1i << " Dist: "<<distP1 << " Inter 2: "<<x2i<<" "<<y2i << " Dist: "<<distP2;
+                      }
+                    #endif
+                  if(distP1<distP2){
+                    costGoalDist = min00(1/distP1,1.0);
+
+                  } else {
+                    costGoalDist = min00(1/distP2,1.0);
+                  }
+                }
+
+              } else {
+                costGoalDist = 0;
+                #if DEBUG_CDL_LOOKUP_FILE_OUT
+                  if(COMP->cdlLookupdebug.is_open()){
+                    COMP->cdlLookupdebug << " No intersection!";
+                  }
+                #endif
+              }
+            }
+
+
+            // prevent the robot from moving away from the goal!
+            double res_x,res_y;
+
+            if(vrot != 0){
+
+              double r = (vtrans/1000.0) / vrot;
+              r = r*1000.0;
+              double icc_x = 0;
+              double icc_y = r;
+              //  COMP->cdlLookupdebug <<" icc_y: "<<icc_y;
+              if(icc_y<0){
+                r = abs00(r);
+              }
+
+              //calculate point on line
+              double s, alpha, h,ys, r_m;
+              r_m = r/1000.0;
+              s = vtrans * deltat;
+              alpha = s/r;
+              h = sin(alpha) * r_m;
+              ys = cos(alpha) * r_m;
+
+              //  COMP->cdlLookupdebug <<" deltat: "<<deltat<<" s: "<<s<<" alpha: "<<alpha<<" h: "<<h<<" ys: "<<ys;
+
+              res_x = h*1000;
+              if(icc_y<0){
+                res_y = icc_y + (ys*1000.0);
+              } else {
+                res_y = icc_y - (ys*1000.0);
+              }
+
+            } else {
+
+              double s;
+              s = vtrans * deltat;
+              res_x = s;
+              res_y = 0;
+            }
+
+            //std::cout<<"res_x: "<<res_x<<" res_y: "<<res_y<<std::endl;
+
+            double predicted_pose_goaldist = std::sqrt( square(res_x-pathNavGoalPoint_x)+square(res_y-pathNavGoalPoint_y) );
+            double current_pose_goaldist = std::sqrt( square(pathNavGoalPoint_x)+square(pathNavGoalPoint_y) );
+
+            #if DEBUG_CDL_LOOKUP_FILE_OUT
+              if(COMP->cdlLookupdebug.is_open()){
+              //  COMP->cdlLookupdebug << " pathNavGoalPoint: "<<pathNavGoalPoint_x<<"|"<<pathNavGoalPoint_x;
+              //	COMP->cdlLookupdebug << " predPose: "<<res_x<<"|"<<res_y;
+                COMP->cdlLookupdebug << " curPosDist: "<<current_pose_goaldist<<" predPosDist: "<<predicted_pose_goaldist;
+                if(current_pose_goaldist>predicted_pose_goaldist){
+                  COMP->cdlLookupdebug << "DIR OK! ";
+                } else {
+                  COMP->cdlLookupdebug << "DIR FALSE! ";
+                }
+              }
+            #endif
+            if(current_pose_goaldist>predicted_pose_goaldist){
+
+              if(vtrans > desiredTranslationalSpeed){
+                costValue = 0;
+              } else {
+
+            costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+
+            alpha1=0.25;
+            alpha2=1.0;
+            costValue=alpha1*costSpeed+alpha2*costGoalDist;
+              }
+
+            } else {
+
+              costValue = 0;
+
+
+            }
+
+            #if DEBUG_CDL_LOOKUP_FILE_OUT
+              if(COMP->cdlLookupdebug.is_open()){
+              COMP->cdlLookupdebug << " costGoalDist: "<<costGoalDist<< " costSpeed "<<costSpeed;
+                COMP->cdlLookupdebug << " Cost: "<<costValue<<std::endl;
+              }
+            #endif
+          }
+          break;
+
+          // ------------------------------------------------
+          // - assumes absolute current position
+          // - assumes absolute goal position
+          //
+          // - calculate position when assuming maximum
+          //   allowed decceleration on selected curvature
+          //   for determining all the relevant cost values
+          // ------------------------------------------------
+          case CDL_STRATEGY_10:
+
+            // calculate stop position
+            if (abs00(vrot) <= vRotStepHelp)
+              {
+                //
+                //
+                // drive straight forward
+                //
+                //
+                if (abs00(vtrans) <= vTransStepHelp)
+                  {
+                    // no movement at all, but set brakeDist to an
+                    // uncritical value to get the heading direction
+                    // for determining the costGoal value
+                    brakeDist  = 1.0;
+                    brakeAngle = 0.0;
+                  }
+                else
+                  {
+                    // robot moves straight forward
+                    brakeDist  = BRAKE_SECURITY_FACTOR*(vtrans*vtrans)/(2*vAccMax);
+                    brakeAngle = 0.0;
+                  }
+                posXstop     = posX+brakeDist*cos(posA);
+                posYstop     = posY+brakeDist*sin(posA);
+                posAstop     = angle00(posA);
+
+                // intersection of circle around goal position
+                // and line through current position and goal position
+                status = intersectionsCircleLine(
+                            goalX,goalY,cdl_capture_distance,
+                            posX,posY,posXstop,posYstop,
+                            x1i,y1i,x2i,y2i,
+                            nrIntersections);
+                if ((status == 0) && (nrIntersections > 0))
+                  {
+                    // now check whether the intersections are in
+                    // driving direction
+                    double alpha1,alpha2,alpha;
+
+                    alpha1 = atan2(posYstop-posY,posXstop-posX);
+                    alpha2 = atan2(y1i-posY,x1i-posX);
+                    alpha  = angle00(alpha2 - alpha1);
+
+                    if ((alpha > -M_PI) && (alpha < M_PI))
+                      {
+                        // correct heading to hit the goal point therefore
+                        // driving straight forward allows to hit the goal
+                        costPassing = 1;
+                      };
+                  }
+                else
+                  {
+                    // goal point is in reverse direction to current heading or
+                    // is too far away from driving direction
+                    costPassing = 0;
+                  }
+
+                // calculate whether goal point hits the goal position
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+
+                #if DEBUG_VW_WINDOW
+                                      if (file!=NULL)
+                                        {
+                                          fprintf(file,"drive straight forward\n");
+                                          fprintf(file,"brakeDist brakeAngle %f %f\n",
+                                                  brakeDist,deg00(brakeAngle));
+                                          fprintf(file,"stopPosX stopPosY stopPosA %f %f %f\n",
+                                                  posXstop,posYstop,deg00(posAstop));
+                                          fprintf(file,"hitDistance hitAngle %f %f\n",
+                                                  hitDistance,deg00(hitAngle));
+                                          fprintf(file,"costHit costPassing %f %f\n",
+                                                  costHit,costPassing);
+                                        }
+                #endif
+
+              }
+            else if (abs00(vtrans) <= vTransStepHelp)
+              {
+                //
+                //
+                // turn in place
+                //
+                //
+                brakeDist       = 0.0;
+                brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
+                if (vrot < 0.0) brakeAngle *= -1.0;
+                posXstop        = posX;
+                posYstop        = posY;
+                posAstop        = angle00(posA+brakeAngle);
+                deltaX          = goalX - posXstop;
+                deltaY          = goalY - posYstop;
+                passingDistance = sqrt(deltaX*deltaX+deltaY*deltaY);
+
+                if (passingDistance<cdl_capture_distance)
+                  {
+                    // turning in place allows to hit the goal since the
+                    // robot is already within the circle around the goal
+                    costPassing = 1;
+                  }
+                else
+                  {
+                    costPassing = 0;
+                  }
+
+                // calculate whether goal point hits the goal position
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+
+                #if DEBUG_VW_WINDOW
+                                      if (file!=NULL)
+                                        {
+                                          fprintf(file,"turn in place\n");
+                                          fprintf(file,"brakeDist brakeAngle %f %f\n",
+                                                  brakeDist,deg00(brakeAngle));
+                                          fprintf(file,"costHit costPassing %f %f\n",
+                                                  costHit,costPassing);
+                                        }
+                #endif
+
+                                    }
+                                  else if (vrot > 0.0)
+                                    {
+                                      //
+                                      //
+                                      // drive on curvature, left
+                                      //
+                                      //
+                                      brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
+                                      radius          = vtrans/vrot;
+                                      posXm           = posX  - radius * sin(posA);
+                                      posYm           = posY  + radius * cos(posA);
+                                      posXstop        = posXm + radius * sin(posA+brakeAngle);
+                                      posYstop        = posYm - radius * cos(posA+brakeAngle);
+                                      posAstop        = angle00(posA+brakeAngle);
+
+                                      deltaX          = posXm - goalX;
+                                      deltaY          = posYm - goalY;
+                                      passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
+                                      if (passingDistance<cdl_capture_distance)
+                                        {
+                                          // the considered path goes through the specified
+                                          // goal point within a reasonable bound
+                                          costPassing = 1;
+                                        }
+                                      else
+                                        {
+                                          costPassing = 0;
+                                        }
+
+                                      deltaX      = goalX - posXstop;
+                                      deltaY      = goalY - posYstop;
+                                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                                      if (hitDistance < cdl_capture_distance)
+                                        {
+                                          costHit = 1;
+                                        }
+                                      else
+                                        {
+                                          costHit = 0;
+                                        }
+
+                                      // calculate the alignment of the stop position with
+                                      // the goal point
+                                      if (hitDistance < cdl_capture_distance)
+                                        {
+                                          // distance is too small, therefore heading cannot be
+                                          // calculated correctly. Since heading in goal point
+                                          // is not relevant in this mode, set goalAngle to 0.
+                                          hitAngle = 0.0;
+                                        }
+                                      else
+                                        {
+                                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                                        }
+
+                #if DEBUG_VW_WINDOW
+                                      if (file!=NULL)
+                                        {
+                                          fprintf(file,"drive on curvature, left\n");
+                                          fprintf(file,"brakeAngle %f\n",
+                                                  deg00(brakeAngle));
+                                          fprintf(file,"stopPosX stopPosY stopPosA %f %f %f\n",
+                                                  posXstop,posYstop,deg00(posAstop));
+                                          fprintf(file,"posXm posYm deltx delty radius %f %f %f %f %f\n",
+                                                  posXm,posYm,deltaX,deltaY,radius);
+                                          fprintf(file,"hitDistance hitAngle %f %f\n",
+                                                  hitDistance,deg00(hitAngle));
+                                          fprintf(file,"costHit costPassing %f %f\n",
+                                                  costHit,costPassing);
+                                        }
+                #endif
+              }
+            else
+              {
+                //
+                //
+                // drive on curvature, right
+                //
+                //
+                brakeAngle      = -BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
+                radius          = -vtrans/vrot;   // assume positive radius
+                posXm           = posX  + radius * sin(posA);
+                posYm           = posY  - radius * cos(posA);
+                posXstop        = posXm - radius * sin(posA+brakeAngle);
+                posYstop        = posYm + radius * cos(posA+brakeAngle);
+                posAstop        = angle00(posA+brakeAngle);
+                deltaX          = posXm - goalX;
+                deltaY          = posYm - goalY;
+                passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
+
+                if (passingDistance<cdl_capture_distance)
+                  {
+                    // the considered path goes through the specified
+                    // goal point within a reasonable bound
+                    costPassing = 1;
+                  }
+                else
+                  {
+                    costPassing = 0;
+                  }
+
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+
+                #if DEBUG_VW_WINDOW
+                  if (file!=NULL)
+                    {
+                      fprintf(file,"drive on curvature, right\n");
+                      fprintf(file,"brakeAngle %f\n",
+                              deg00(brakeAngle));
+                      fprintf(file,"stopPosX stopPosY stopPosA %f %f %f\n",
+                              posXstop,posYstop,deg00(posAstop));
+                      fprintf(file,"posXm posYm deltx delty radius %f %f %f %f %f\n",
+                              posXm,posYm,deltaX,deltaY,radius);
+                      fprintf(file,"hitDistance hitAngle %f %f\n",
+                              hitDistance,deg00(hitAngle));
+                      fprintf(file,"costHit costPassing %f %f\n",
+                              costHit,costPassing);
+                    }
+                #endif
+              }
+
+            deltaX = posX - goalX;
+            deltaY = posY - goalY;
+            goalDistance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            //
+            //
+            // evaluation functions
+            //
+            //
+            switch (evalFunc)
+              {
+              case CDL_EVAL_STANDARD:
+                //
+                //
+                //
+                break;
+              case CDL_EVAL_APPROACH_OBJECT:
+                //
+                //
+                //
+                break;
+              case CDL_EVAL_PASSING:
+                //
+                // std::cout << "CDL_EVAL_PASSING: posX = " << posX << "; goalX = " << goalX <<"; posY = "<<posY<< "; goalY = "<< goalY <<  "; goalDistance = " << goalDistance << std::endl;
+                //
+                if (goalDistance > rangeFarPassing)
+                  {
+                    desiredTranslationalSpeed = speedFarPassing;
+                  }
+                else if (goalDistance > rangeMediumPassing)
+                  {
+                    desiredTranslationalSpeed = speedMediumPassing;
+                  }
+                else
+                  {
+                    desiredTranslationalSpeed = speedNearPassing;
+                  }
+                costHeading = 1.0-abs00(hitAngle)/M_PI;
+
+                costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                if (costSpeed < 0.0) costSpeed = 0.0;
+
+                costDist=dist/cdl_max_distance;
+                if (costDist > 1.0) costDist = 1.0;
+
+                // if (indexWanted[ci]==0) {
+                //   // curvature is not wanted
+                //   costValue = 10000.0;
+                // } else {
+                //   // curvature is wanted
+                //   costValue = 20000.0;
+                // };
+                costValue = 0.0;
+                // costValue += 1.0*costSpeed+1.0*costDist+2000.0*costHeading;
+                costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
+                costValue += 2*costPassing;
+
+                if (dist > bonusDistPassing)
+                  {
+                    costValue += 5000.0;
+                  }
+
+                if ((vtrans > 5.0) && (vtrans < 100.0)) costValue = 0.0;
+                if (fabs(vtrans) < 5.0)
+                  {
+                    if (vrot >  rad00(10)) vrot =  rad00(10);
+                    if (vrot < -rad00(10)) vrot = -rad00(10);
+                  }
+
+                alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
+                if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
+
+
+                break;
+              case CDL_EVAL_STOPPING:
+                //
+                //
+                // std::cout << "CDL_EVAL_STOPPING: posX = " << posX << "; goalX = " << goalX <<"; posY = "<<posY<< "; goalY = "<< goalY <<  "; goalDistance = " << goalDistance << std::endl;
+                //
+                if (goalDistance > rangeFarStopping)
+                  {
+                    desiredTranslationalSpeed = speedFarStopping;
+                  }
+                else if (goalDistance > rangeMediumStopping)
+                  {
+                    desiredTranslationalSpeed = speedMediumStopping;
+                  }
+                else
+                  {
+                    desiredTranslationalSpeed = speedNearStopping;
+                  }
+                costHeading = 1.0-abs00(hitAngle)/M_PI;
+
+                costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                if (costSpeed < 0.0) costSpeed = 0.0;
+
+                costDist=dist/cdl_max_distance;
+                if (costDist > 1.0) costDist = 1.0;
+
+                // if (indexWanted[ci]==0) {
+                //   // curvature is not wanted
+                //   costValue = 10000.0;
+                // } else {
+                //   // curvature is wanted
+                //   costValue = 20000.0;
+                // };
+
+                costValue = 0.0;
+                // costValue += 1.0*costSpeed+1.0*costDist+2000.0*costHeading;
+                // costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading; //Lutz
+                costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
+                costValue += 2*costHit;
+
+                if (dist > bonusDistStopping)
+                  {
+                    costValue += 5000.0;
+                  }
+
+                if ((vtrans > 5.0) && (vtrans < 50.0)) costValue = 0.0;
+                if (fabs(vtrans) < 5.0)
+                  {
+                    if (vrot >  rad00(10)) vrot =  rad00(10);
+                    if (vrot < -rad00(10)) vrot = -rad00(10);
+                  }
+                alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
+                if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
+
+                break;
+
+
+              case CDL_EVAL_APPROACH_EXACT:
+
+                if (indexWanted[ci]==0)
+                  {
+                    // curvature is not wanted
+                    costValue = 10000.0;
+                  }
+                else
+                  {
+                    // curvature is wanted
+                    costValue = 20000.0;
+                  };
+
+                costHeading = 1.0-abs00(hitAngle)/M_PI;
+
+                costDist=dist/cdl_max_distance;
+                if (costDist > 1.0) costDist = 1.0;
+
+                // if (goalDistance > 2500.0) {
+                //   desiredTranslationalSpeed = 100.0;
+                // } else if (goalDistance > 1000.0) {
+                //   desiredTranslationalSpeed = 100.0;
+                // } else {
+                //   desiredTranslationalSpeed = 50.0;
+                // }
+                // costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                // if (costSpeed < 0.0) costSpeed = 0.0;
+                // costValue += 2000.0*costHeading+1.0*costSpeed+1.0*costDist;
+
+                if (abs00(vrot) > rad00(30.0)) costValue = 0.0;
+                if (goalDistance > 1000.0)
+                  {
+                    if ((vtrans<95.0) || (vtrans>105.0)) costValue = 0.0;
+                  }
+                else
+                  {
+                    if ((vtrans <45.0) || (vtrans>55.0)) costValue = 0.0;
+                  }
+                costValue += 2000.0*costHeading;
+
+                break;
+              default:
+                costValue = 0.0;
+                break;
+              }
+
+
+            #if EVAL_FUNC_1
+            {
+              double free = 1000.0;
+              double angle = (60.0*M_PI/180.0);
+
+              if (hitAngle < -angle) hitAngle=-angle;
+              if (hitAngle >  angle) hitAngle= angle;
+              costHeading=1.0-abs00(angle00(hitAngle-vrot))/(2*angle);
+
+              if (hitDistance > free)
+                {
+                  desiredTranslationalSpeed = 900.0;
+                }
+              else
+                {
+                  desiredTranslationalSpeed = 200.0;
+                }
+              costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+              costDist=dist/5000.0;
+              if (costDist>1.0) costDist=1.0;
+
+              if ((dist > free) && (vtrans>100.0))
+                {
+                  alpha1=1.0;
+                  alpha2=1.0;
+                  alpha3=2.0;
+                  costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+                }
+              else
+                {
+                  alpha1=1.0;
+                  alpha2=1.0;
+                  alpha3=1.0;
+                  costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+                }
+            }
+            #endif
+
+            //
+            //
+            // evaluation function 3
+            //
+            //
+            #if EVAL_FUNC_3
+            costValue = 0;
+            if (goalDistance < 500.0)
+              {
+                desiredTranslationalSpeed = 50.0;
+              }
+            else if (goalDistance < 1000.0)
+              {
+                desiredTranslationalSpeed = 100.0;
+                // costValue += costHit*10.0;
+              }
+            else
+              {
+                desiredTranslationalSpeed = 900.0;
+                // if ((dist > 1000.0) || (angle > rad00(20.0))) costValue += 6;
+                // if (abs00(deg00(hitAngle)) < 10.0) costValue+=3;
+                costValue += costPassing;
+              }
+
+            costHeading = 1.0-abs00(hitAngle)/M_PI;
+            costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+            if (costSpeed < 0.0) costSpeed = 0.0;
+            costDist=dist/CDL_MAX_DISTANCE;
+            if (costDist > 1.0) costDist = 1.0;
+
+            if ((dist > 1000.0) && (vtrans > 100.0))
+              {
+                alpha1 = 1.0;
+                alpha2 = 1.0;
+                alpha3 = 2.0;
+                costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+              }
+            else
+              {
+                alpha1 = 1.0;
+                alpha2 = 1.0;
+                alpha3 = 2.0;
+                costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+              }
+
+            evaluation[vi][wi].costHit      = costHit;
+            evaluation[vi][wi].costPassing  = costPassing;
+            evaluation[vi][wi].costSpeed    = costSpeed;
+            evaluation[vi][wi].costDistance = costDist;
+            evaluation[vi][wi].costHeading  = costHeading;
+            evaluation[vi][wi].costValue    = costValue;
+
+            #endif
+
+            //
+            //
+            // evaluation function 4
+            //
+            //
+            #if EVAL_FUNC_4
+              if (hitDistance > 2000.0)
+                {
+                  desiredTranslationalSpeed = 500.0;
+                }
+              else
+                {
+                  desiredTranslationalSpeed = 100.0;
+                }
+              if (dist > 1500.0)
+                {
                   costHeading = 1.0-abs00(hitAngle)/M_PI;
                   costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
                   if (costSpeed < 0.0) costSpeed = 0.0;
                   costDist=dist/CDL_MAX_DISTANCE;
                   if (costDist > 1.0) costDist = 1.0;
-
-                  if ((dist > 1000.0) && (vtrans > 100.0))
-                    {
-                      alpha1 = 1.0;
-                      alpha2 = 1.0;
-                      alpha3 = 2.0;
-                      costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                    }
-                  else
-                    {
-                      alpha1 = 1.0;
-                      alpha2 = 1.0;
-                      alpha3 = 2.0;
-                      costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                    }
-
-                  evaluation[vi][wi].costHit      = costHit;
-                  evaluation[vi][wi].costPassing  = costPassing;
-                  evaluation[vi][wi].costSpeed    = costSpeed;
-                  evaluation[vi][wi].costDistance = costDist;
-                  evaluation[vi][wi].costHeading  = costHeading;
-                  evaluation[vi][wi].costValue    = costValue;
-
-#endif
-
-                  //
-                  //
-                  // evaluation function 4
-                  //
-                  //
-#if EVAL_FUNC_4
-                  if (hitDistance > 2000.0)
-                    {
-                      desiredTranslationalSpeed = 500.0;
-                    }
-                  else
-                    {
-                      desiredTranslationalSpeed = 100.0;
-                    }
-                  if (dist > 1500.0)
-                    {
-                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-                      costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                      if (costSpeed < 0.0) costSpeed = 0.0;
-                      costDist=dist/CDL_MAX_DISTANCE;
-                      if (costDist > 1.0) costDist = 1.0;
-                      costValue = 1.0*costSpeed+1.0*costDist+1000.0*costHeading;
-                    }
-                  else
-                    {
-                      costValue = 0.0;
-                    }
-#endif
-
-#if DEBUG_VW_WINDOW
-                  if (file!=NULL)
-                    {
-                      fprintf(file,"evaluation\n");
-                      fprintf(file,"  hitAngle     %f\n",deg00(hitAngle));
-                      fprintf(file,"  hitDistance  %f\n",hitDistance);
-                      fprintf(file,"  costHeading  %f\n",costHeading);
-                      fprintf(file,"  costSpeed    %f\n",costSpeed);
-                      fprintf(file,"  costPassing  %f\n",costPassing);
-                      fprintf(file,"  costValue    %f\n",costValue);
-                    }
-#endif
-
-                  break;
-
-
-                case CDL_STRATEGY_11:
-                  //
-                  // this strategy is used to turn in place
-                  //
-                  // the desired heading is specified by the current
-                  // robot position and the goal position
-                  //
-                  // important hint:
-                  // to prevent overshooting the goal orientation, hitAngles
-                  // stopping before the goal orientation are better than
-                  // hitAngles stopping after the desired orientation. Therefore,
-                  // the evaluation function considers the turning direction
-                  //
-                {
-                  double desiredHeading;   //     [-M_PI, M_PI]
-
-                  desiredHeading = angle00(atan2(goalY-posY,goalX-posX));
-
-                  double angleDelta = angle00(desiredHeading-posA);
-                  double vInter = linearinterpolation(rotwCVector,abs00(angleDelta*180/M_PI));
-		  vInter = vInter/180*M_PI;
-                  if(angleDelta < 0 )
-                  {
-                	  vInter = -vInter;
-                  }
-
-                  double error = abs00(vInter - vrot);
-
-                  if(error > 1.0){
-                	  costValue = min00(1.0/error,1.00);
-                  } else {
-			  
-                	  costValue = 100.0 + (1.0 - error);
-			
-                  }
-//		  std::cout<<"AngleDelta: "<<angleDelta<<" vInter: "<<vInter<<" vrot: "<<vrot<<" error: "<<error<<" costValue: "<<costValue<<std::endl;
-
-//                  if (abs00(vrot) <= vRotStepHelp)
-//                    {
-//                      //
-//                      // no movement at all
-//                      //
-//                      brakeAngle = 0.0;
-//                      posAstop   = posA;
-//                    }
-//                  else
-//                    {
-//                      //
-//                      // robot turns in place
-//                      //
-//                      brakeAngle = (vrot*vrot)/(2*wAccMax);
-//                      if (vrot < 0.0) brakeAngle *= -1.0;
-//                      // factor 2.0 is used to damp the rotational velocity
-//                      posAstop   = angle00(posA+10.0*brakeAngle);
-//                    }
-//                  hitAngle = angle00(desiredHeading-posAstop);
-//
-//                  if ((vrot > 0.0) && (hitAngle >= 0.0))
-//                    {
-//                      // turning left
-//                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-//                    }
-//                  else if ((vrot < 0.0) && (hitAngle <= 0.0))
-//                    {
-//                      // turning right
-//                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-//                    }
-//                  else
-//                    {
-//                      // overshooting
-//                      costHeading = 0.0;
-//                    }
-//		  std::cout<<"vrot: "<<vrot<<" costValue: "<<costValue<<std::endl;
-                  //costValue = costHeading;
-
-//                  evaluation[vi][wi].costHit      = 0.0;
-//                  evaluation[vi][wi].costPassing  = 0.0;
-//                  evaluation[vi][wi].costSpeed    = 0.0;
-//                  evaluation[vi][wi].costDistance = 0.0;
-//                  evaluation[vi][wi].costHeading  = costHeading;
-//                  evaluation[vi][wi].costValue    = costValue;
-
-#if DEBUG_VW_WINDOW
-                  if (file!=NULL)
-                    {
-                      fprintf(file,"rotate in place\n");
-                      fprintf(file,"pos  x y a %f %f %f\n",posX,posY,deg00(posA));
-                      fprintf(file,"goal x y   %f %f\n",goalX,goalY);
-                      fprintf(file,"desiredHeading %f\n",deg00(desiredHeading));
-                      fprintf(file,"brakeAngle  %f\n",deg00(brakeAngle));
-                      fprintf(file,"posAstop    %f\n",deg00(posAstop));
-                      fprintf(file,"hitAngle    %f\n",deg00(hitAngle));
-                      fprintf(file,"costHeading %f\n",costHeading);
-                    }
-#endif
+                  costValue = 1.0*costSpeed+1.0*costDist+1000.0*costHeading;
                 }
-                break;
-
-//<startegy added by asteck, mlutz; 2009-10-23>
-                case CDL_STRATEGY_12:
+              else
                 {
-                  //double free = 1000.0;
-                  double angle = (60.0*M_PI/180.0);
-
-                  double deltaX = goalX - posX;
-                  double deltaY = goalY - posY;
-                  double hitDistance = sqrt( deltaX*deltaX + deltaY*deltaY );
-                  double hitAngle = angle00( atan2( deltaY, deltaX) - posA );
-
-
-                  if (hitAngle < -angle) hitAngle=-angle;
-                  if (hitAngle >  angle) hitAngle= angle;
-                  costHeading=1.0-abs00(angle00(hitAngle-vrot))/(2*angle);
-
-                  costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-                  costDist=dist/cdl_max_distance; // CDL_MAX_DISTANCE = 5000.0
-
-                  if (costDist>1.0) costDist=1.0;
-
-                  double gainHitDist = hitDistance / 1500.0; //hitDistance / 1000.0;
-                  if(gainHitDist >1.0) gainHitDist = 1.0;
-
-                  if(evalFunc == CDL_EVAL_PASSING) gainHitDist = 1.0;
-
-                  alpha1 = 20.0 - (1-gainHitDist) *  19.0; // 20.0 - 19.0
-                  alpha2 =  2.0 - (1-gainHitDist) *   1.0; // 2.0  - 1.0
-                  alpha3 =  1.0 + (1-gainHitDist) * 100.0; // 1.0  + 100.0
-                  costValue = alpha1*costSpeed + alpha2*costDist + alpha3*costHeading;
-
-                  //std::cout << "vtrans = " << vtrans << "; vrot = " << vrot/M_PI*180.0 <<  "; costSpeed = " << costSpeed << " ; costDist = " << costDist << " ; costHeading = " << costHeading << " ; costValue = " << costValue << std::endl;
-
-/*
-                  //if ((dist > free) && (vtrans>100.0))
-                  if ((hitDistance > free) && (vtrans>100.0))
-                  {
-                    alpha1=5.0;
-                    alpha2=15.0;
-                    alpha3=2.0;
-                    costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                  }
-                  else
-                  {
-                    alpha1=2.0;
-                    alpha2=1.0;
-                    alpha3=8.0;
-                    costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                  }
-*/
-                  break;
-                }
-//</strategy 12>
-
-
-		case CDL_STRATEGY_13:
-                {
-                  costHeading=1.0-abs00(angle00(vrot));
-
-                  costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-
-                  //std::cout<<"vrot: "<<vrot<<" costHeading: "<<costHeading<<" vtrans: "<<vtrans<<" costSpeed: "<<costSpeed;
-
-                  if(abs00(vrot)> 0.10 )
-                  {
-						 costValue=0;
-                  }else{
-                     costValue = costSpeed + costHeading;
-                  }
-
-		  //std::cout<<" costValue: "<<costValue<<std::endl;
-                  break;
-                }
-//</strategy 13>
-
-                //<startegy added by mlutz; 2011-06-08>
-		case CDL_STRATEGY_14: {
-
-			//double free = 1000.0;
-			double angle = (60.0*M_PI/180.0);
-
-			double deltaX = goalX - posX;
-			double deltaY = goalY - posY;
-			double hitAngle = angle00( atan2( deltaY, deltaX) - posA );
-			if (hitAngle < -angle) hitAngle=-angle;
-			if (hitAngle >  angle) hitAngle= angle;
-			costHeading=1.0-abs00(angle00(hitAngle-vrot))/(2*angle);
-
-			costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-			costDist=dist/cdl_max_distance; // CDL_MAX_DISTANCE = 5000.0
-			costDist = 0;
-			if (costDist>1.0) costDist=1.0;
-
-			double gainHitDist = hitDistance / 1500.0; //hitDistance / 1000.0;
-			if(gainHitDist >1.0) gainHitDist = 1.0;
-
-			if(evalFunc == CDL_EVAL_PASSING) gainHitDist = 1.0;
-
-			// alpha1 = 20.0 - (1-gainHitDist) *  19.0; // 20.0 - 19.0
-			// alpha2 =  2.0 - (1-gainHitDist) *   1.0; // 2.0  - 1.0
-			// alpha3 =  1.0 + (1-gainHitDist) * 100.0; // 1.0  + 100.0
-			alpha1 = 1;
-			alpha2 = 1;
-			alpha3 = 2;
-			// costValue = alpha1*costSpeed + alpha2*costDist + alpha3*costHeading;
-			costValue = alpha1*costSpeed + alpha3*costHeading;
-
-			  //std::cout <<" vtrans = " << vtrans << "; vrot = " << vrot <<  "; costSpeed = " << costSpeed << " ; costDist = " << costDist << " ; costHeading = " << costHeading << " ; costValue = " << costValue << std::endl;
-
-		  //}
-
-		  break;
-		}
-                //</strategy 14>
-
-                 case CDL_STRATEGY_2:
-                  // ----------------------------------------------------
-                  // - akzeptiert Geschwindigkeitsvorgabe von aussen
-                  // ----------------------------------------------------
-                {
-                  double free = 1000.0;
-                  double angle = (60.0*M_PI/180.0);
-
-                  if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
-                  if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
-                  costHeading=1.0-abs00(angle00(goalHeadingRelative-vrot))/(2*angle);
-
-                  costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-                  costDist=dist/maxDistance;
-                  if (costDist>1.0) costDist=1.0;
-                  if ((dist > free) && (vtrans>100.0))
-                    {
-                      alpha1=1.0; //1
-                      alpha2=1.0; //1
-                      alpha3=2.0; //2
-                      costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                    }
-                  else
-                    {
-                      alpha1=6.0; // 6
-                      alpha2=3.0; // 3
-                      alpha3=1.0; // 1
-                      costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                    }
-
-                }
-                break;
-
-                case CDL_STRATEGY_3:
-                  // ----------------------------------------------------
-                  // - macht Geschwindigkeitsregelung selbstaendig
-                  // - muss man noch fertig implementieren
-                  // ----------------------------------------------------
-                {
-                  double angle = (40.0*M_PI/180.0);
-
-                  if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
-                  if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
-
-                  if ((dist < 1000.0) || (abs00(vrot) > angle) || (abs00(vtrans)<50.0))
-                    {
-                      // mindestens Restwegstrecke von 1000 mm
-                      // mindestens Translationsgeschwindigkeit 100 mm/s
-                      // maximal Drehung um 40 Grad/s
-                      costValue = 0.0;
-                    }
-                  else
-                    {
-                      costHeading=1.0-abs00(angle00(goalHeadingRelative-vrot))/(2*angle);
-
-                      costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-
-                      costDist=dist/maxDistance;
-                      if (costDist>1.0) costDist=1.0;
-                      costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
-                    }
-                }
-                break;
-                case CDL_STRATEGY_4:
-                  // -------------------------------------------------------
-                  // used for testing purposes
-                  // - je groesser die Abweichung von der Zielrichtung, desto hoeher w
-                  // - je groesser die Entfernung zu Ziel, desto hoeher v
-                  // -------------------------------------------------------
-// vtrans, vrot         aktuell betrachtete Geschwindigkeit
-// dist                 verbleibende Reststrecke
-// goalHeadingRelative  Ausrichtungsfehler bezueglich Ziel
-//
-                {
-                  double angle = (90*M_PI/180.0);
-                  double mind  = 1000.0;
-                  double minv  = 50.0;
-                  double k     = 2.0;               // Linearitaetsfaktor
-                  double wmax  = (50.0*M_PI/180.0);   // maximal erlaubte Rotationsgeschwindigkeit
-                  double amax  = 30.0;              // zur Berechnung der maximal erlaubten Geschwindigkeit
-
-                  double wsoll;
-                  double vsoll;
-
-                  // Begrenzung des Winkelfehlers
-                  if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
-                  if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
-
-                  // Bestimmung der Solldrehgeschwindigkeit, begrenzt durch wmax
-//            wsoll = sqrt(2*goalHeadingRelative*wmax);
-                  wsoll = goalHeadingRelative*k;
-                  if (wsoll > wmax) wsoll =  wmax;
-                  if (wsoll <-wmax) wsoll = -wmax;
-
-                  // Bestimmung der Sollfahrgeschwindigkeit
-                  if (maxDistance < 200.0) vsoll=0.0;
-                  else vsoll=sqrt(2*maxDistance*amax);
-
-                  if ((dist < mind) || (abs00(vrot) > wsoll) || (abs00(vtrans) < minv))
-                    {
-                      costValue = 0.0;
-                    }
-                  else
-                    {
-                      costHeading = 1.0 - min00(abs00(wsoll-vrot)/(2*wmax),1.0);
-                      costSpeed   = 1.0 - min00(abs00(vsoll-vtrans)/vmaxIni,1.0);
-                      costDist    = min00(dist/maxDistance,1.0);
-// vtrans=0.0;
-                      costValue = 1.0 * costSpeed + 1.0 * costDist + 1.0 * costHeading;
-                    }
-                  break;
-                }
-
-
-//<asteck>
-                case CDL_STRATEGY_5:
-                {
-                  // ------------------------------------------------------------------------
-                  // used for v-w commands from "outside" (for example from joystick)
-                  // commands should be set with setDesiredTranslationSpeed and setHeading
-                  // ------------------------------------------------------------------------
-
-                  double free   = 1000.0;
-                  double angle  = (60.0*M_PI/180.0);
-
-                  if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
-                  if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
-
-                  costHeading = 1.0 - abs00( angle00(goalHeadingRelative-vrot)) / (2*angle);
-                  costSpeed   = 1.0 - abs00( desiredTranslationalSpeed-vtrans) / vmaxIni;
-
-                  costDist    = 1; //dist/maxDistance;
-
-                  alpha1 = 1.0;
-                  alpha2 = 1.0;
-                  alpha3 = 3.0;
-
-                  //costValue =  alpha1*costSpeed + alpha3*costHeading;
-                  costValue = alpha1*costSpeed + alpha3*costHeading;
-
-                  //if( vtrans == 350 )
-                  //  printf("STRAT v ; w ; costValue ; dist -- %5.2f ; %5.2f ; %10.2f ; %6.2f\n", vtrans , vrot, costValue, dist);
-
-                  break;
-                } // CDL_STRATEGY_5
-
-//</asteck>
-
-                case CDL_STRATEGY_6:
-                {
-                  // ------------------------------------------------
-                  // - assumes absolute current position
-                  // - assumes absolute goal position
-                  //
-                  // - calculate position when assuming maximum
-                  //   allowed decceleration on selected curvature
-                  //   for determining all the relevant cost values
-                  // ------------------------------------------------
-
-                  //
-                  // calculate stop position
-                  //
-                  if (abs00(vrot) <= vRotStepHelp)
-                    {
-                      //
-                      //
-                      // drive straight forward
-                      //
-                      //
-                      if (abs00(vtrans) <= vTransStepHelp)
-                        {
-                          // no movement at all, but set brakeDist to an
-                          // uncritical value to get the heading direction
-                          // for determining the costGoal value
-                          brakeDist  = 1.0;
-                          brakeAngle = 0.0;
-                        }
-                      else
-                        {
-                          // robot moves straight forward
-                          brakeDist  = BRAKE_SECURITY_FACTOR*(vtrans*vtrans)/(2*vAccMax);
-                          brakeAngle = 0.0;
-                        }
-                      posXstop     = posX+brakeDist*cos(posA);
-                      posYstop     = posY+brakeDist*sin(posA);
-                      posAstop     = angle00(posA);
-
-                      // intersection of circle around goal position
-                      // and line through current position and goal position
-                      status = intersectionsCircleLine(
-                                 goalX,goalY,cdl_capture_distance,
-                                 posX,posY,posXstop,posYstop,
-                                 x1i,y1i,x2i,y2i,
-                                 nrIntersections);
-                      if ((status == 0) && (nrIntersections > 0))
-                        {
-                          // now check whether the intersections are in
-                          // driving direction
-                          double alpha1,alpha2,alpha;
-
-                          alpha1 = atan2(posYstop-posY,posXstop-posX);
-                          alpha2 = atan2(y1i-posY,x1i-posX);
-                          alpha  = angle00(alpha2 - alpha1);
-
-                          if ((alpha > -M_PI) && (alpha < M_PI))
-                            {
-                              // correct heading to hit the goal point therefore
-                              // driving straight forward allows to hit the goal
-                              costPassing = 1;
-                            };
-                        }
-                      else
-                        {
-                          // goal point is in reverse direction to current heading or
-                          // is too far away from driving direction
-                          costPassing = 0;
-                        }
-
-                      // calculate whether goal point hits the goal position
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-
-                    }
-                  else if (abs00(vtrans) <= vTransStepHelp)
-                    {
-                      //
-                      //
-                      // turn in place
-                      //
-                      //
-                      brakeDist       = 0.0;
-                      brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
-                      if (vrot < 0.0) brakeAngle *= -1.0;
-                      posXstop        = posX;
-                      posYstop        = posY;
-                      posAstop        = angle00(posA+brakeAngle);
-                      deltaX          = goalX - posXstop;
-                      deltaY          = goalY - posYstop;
-                      passingDistance = sqrt(deltaX*deltaX+deltaY*deltaY);
-
-                      if (passingDistance<cdl_capture_distance)
-                        {
-                          // turning in place allows to hit the goal since the
-                          // robot is already within the circle around the goal
-                          costPassing = 1;
-                        }
-                      else
-                        {
-                          costPassing = 0;
-                        }
-
-                      // calculate whether goal point hits the goal position
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-                    }
-                  else if (vrot > 0.0)
-                    {
-                      //
-                      //
-                      // drive on curvature, left
-                      //
-                      //
-                      brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
-                      radius          = vtrans/vrot;
-                      posXm           = posX  - radius * sin(posA);
-                      posYm           = posY  + radius * cos(posA);
-                      posXstop        = posXm + radius * sin(posA+brakeAngle);
-                      posYstop        = posYm - radius * cos(posA+brakeAngle);
-                      posAstop        = angle00(posA+brakeAngle);
-
-                      deltaX          = posXm - goalX;
-                      deltaY          = posYm - goalY;
-                      passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
-                      if (passingDistance<cdl_capture_distance)
-                        {
-                          // the considered path goes through the specified
-                          // goal point within a reasonable bound
-                          costPassing = 1;
-                        }
-                      else
-                        {
-                          costPassing = 0;
-                        }
-
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-
-                    }
-                  else
-                    {
-                      //
-                      //
-                      // drive on curvature, right
-                      //
-                      //
-                      brakeAngle      = -BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
-                      radius          = -vtrans/vrot;   // assume positive radius
-                      posXm           = posX  + radius * sin(posA);
-                      posYm           = posY  - radius * cos(posA);
-                      posXstop        = posXm - radius * sin(posA+brakeAngle);
-                      posYstop        = posYm + radius * cos(posA+brakeAngle);
-                      posAstop        = angle00(posA+brakeAngle);
-                      deltaX          = posXm - goalX;
-                      deltaY          = posYm - goalY;
-                      passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
-
-                      if (passingDistance<cdl_capture_distance)
-                        {
-                          // the considered path goes through the specified
-                          // goal point within a reasonable bound
-                          costPassing = 1;
-                        }
-                      else
-                        {
-                          costPassing = 0;
-                        }
-
-                      deltaX      = goalX - posXstop;
-                      deltaY      = goalY - posYstop;
-                      hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          costHit = 1;
-                        }
-                      else
-                        {
-                          costHit = 0;
-                        }
-
-                      // calculate the alignment of the stop position with
-                      // the goal point
-                      if (hitDistance < cdl_capture_distance)
-                        {
-                          // distance is too small, therefore heading cannot be
-                          // calculated correctly. Since heading in goal point
-                          // is not relevant in this mode, set goalAngle to 0.
-                          hitAngle = 0.0;
-                        }
-                      else
-                        {
-                          hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
-                        }
-                    }
-
-                  deltaX = posX - goalX;
-                  deltaY = posY - goalY;
-                  goalDistance = sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                  //
-                  //
-                  // evaluation functions
-                  //
-                  //
-                  switch (evalFunc)
-                    {
-                    case CDL_EVAL_STANDARD:
-                      //
-                      //
-                      //
-                      break;
-                    case CDL_EVAL_APPROACH_OBJECT:
-                      //
-                      //
-                      //
-                      break;
-                    case CDL_EVAL_PASSING:
-                      //
-                      // std::cout << "CDL_EVAL_PASSING: posX = " << posX << "; goalX = " << goalX <<"; posY = "<<posY<< "; goalY = "<< goalY <<  "; goalDistance = " << goalDistance << std::endl;
-                      //
-                      if (goalDistance > rangeFarPassing)
-                        {
-                          desiredTranslationalSpeed = speedFarPassing;
-                        }
-                      else if (goalDistance > rangeMediumPassing)
-                        {
-                          desiredTranslationalSpeed = speedMediumPassing;
-                        }
-                      else
-                        {
-                          desiredTranslationalSpeed = speedNearPassing;
-                        }
-                      costHeading = 1.0-abs00(hitAngle)/M_PI;
-
-                      costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                      if (costSpeed < 0.0) costSpeed = 0.0;
-
-                      costDist=dist/cdl_max_distance;
-                      if (costDist > 1.0) costDist = 1.0;
-
-                      costValue = 0.0;
-//                costValue += 1.0*costSpeed+1.0*costDist+2000.0*costHeading;
-                      costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
-                      costValue += 2*costPassing;
-
-                      if (dist > bonusDistPassing)
-                        {
-                          costValue += 5000.0;
-                        }
-
-                      if ((vtrans > 5.0) && (vtrans < 100.0)) costValue = 0.0;
-                      if (fabs(vtrans) < 5.0)
-                        {
-                          if (vrot >  rad00(10)) vrot =  rad00(10);
-                          if (vrot < -rad00(10)) vrot = -rad00(10);
-                        }
-
-                      alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
-                      if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
-
-
-                      break;
-                    case CDL_EVAL_STOPPING:
-                      if (goalDistance > rangeFarStopping)
-                        {
-                          desiredTranslationalSpeed = speedFarStopping;
-
-                          costHeading = 1.0-abs00(hitAngle)/M_PI;
-                          costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                          if (costSpeed < 0.0) costSpeed = 0.0;
-
-                          costDist=dist/cdl_max_distance;
-                          if (costDist > 1.0) costDist = 1.0;
-
-                          costValue = 0.0;
-                          costValue += 1.0*costSpeed+1.0*costDist+10.0*costHeading;
-                          costValue += 2*costHit;
-
-                        }
-                      else if (goalDistance > rangeMediumStopping)
-                        {
-                          desiredTranslationalSpeed = speedMediumStopping;
-
-                          costHeading = 1.0-abs00(hitAngle)/M_PI;
-                          costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                          if (costSpeed < 0.0) costSpeed = 0.0;
-
-                          costDist=dist/cdl_max_distance;
-                          if (costDist > 1.0) costDist = 1.0;
-
-                          costValue = 0.0;
-                          costValue += 1.0*costSpeed+1.0*costDist+50.0*costHeading;
-                          costValue += 2*costHit;
-
-                        }
-                      else
-                        {
-                          desiredTranslationalSpeed = speedNearStopping;
-
-                          costHeading = 1.0-abs00(hitAngle)/M_PI;
-                          costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
-                          if (costSpeed < 0.0) costSpeed = 0.0;
-
-                          costDist=dist/cdl_max_distance;
-                          if (costDist > 1.0) costDist = 1.0;
-
-                          costValue = 0.0;
-                          costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
-                          costValue += 2*costHit;
-
-                        }
-
-
-
-
-
-                      if (dist > bonusDistStopping)
-                        {
-                          costValue += 5000.0;
-                        }
-
-                      if ((vtrans > 5.0) && (vtrans < 50.0)) costValue = 0.0;
-                      if (fabs(vtrans) < 5.0)
-                        {
-                          if (vrot >  rad00(10)) vrot =  rad00(10);
-                          if (vrot < -rad00(10)) vrot = -rad00(10);
-                        }
-                      alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
-                      if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
-
-                      break;
-
-                    default:
-                      costValue = 0.0;
-                      break;
-                    }
-
-		case CDL_STRATEGY_7:
-                {
-                  // ------------------------------------------------------------------------
-                  // follow
-                  // ------------------------------------------------------------------------
-
-
-
-                	if(indexWantedVWCheck[ci]==1){
-                		costHeading=1.0-abs00(angle00(desiredRotationalSpeed-vrot))/wmaxIni;
-                		costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
-                		alpha1 = 1;
-                		alpha2 = 1;
-                		alpha3 = 1;
-                		costValue = alpha1*costSpeed + alpha3*costHeading;
-//                		std::cout<<ci<<" - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<" cost: "<<costValue<<"              v:"<<v<<" w:"<<w<<std::endl;
-                	} else {
-                		//					  std::cout<<ci<<" not wanted - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<std::endl;
-                		costValue = 0;
-                	}
-
-                	break;
-
-
-
-// ALT 22.02.2018
-//                  double free   = 1000.0;
-//                  double angle  = (60.0*M_PI/180.0);
-//
-//                  if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
-//                  if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
-//
-//                  //gain function for goalheadingrelative
-//                  // f(x) = 5+ 0.06* x^2
-//                  double deg_goalHeadingRelative = goalHeadingRelative * (180.0/M_PI);
-//                  double heading_gain_rad = 0.0;
-//
-//                  if(goalHeadingRelative >0.0)
-//                  {
-//                  double heading_gain_deg = 5 + (0.06 * deg_goalHeadingRelative * deg_goalHeadingRelative);
-//                  heading_gain_rad = heading_gain_deg * M_PI/180.0;
-//                  }else
-//                  {
-//                   double heading_gain_deg = -1.0 *(5 + (0.06 * deg_goalHeadingRelative * deg_goalHeadingRelative));
-//                   heading_gain_rad = heading_gain_deg * M_PI/180.0;
-//                  }
-//
-//                  heading_gain_rad = 0;
-//
-//                  costHeading = 1.0 - abs00( angle00(goalHeadingRelative + heading_gain_rad - vrot)) / (2*angle);
-//                  costSpeed   = 1.0 - abs00( desiredTranslationalSpeed - vtrans) / vmaxIni;
-//                  costDist    = dist/maxDistance;
-//
-//                  alpha1 = 1.0;
-//                  alpha2 = 2.0;
-//                  alpha3 = 8.0;
-//
-//
-//                  costValue = alpha1*costSpeed + alpha2*costDist + alpha3*costHeading;
-
-//                  break;
-                } // CDL_STRATEGY_7
-
-
-
-                  break;
-                 }
-                default:
-                  // ----------------------------------------------------
-                  //
-                  // ----------------------------------------------------
-                  std::cout<<"Debug CDL_Lookup in default!!\n";
                   costValue = 0.0;
-                  break;
-                } // end switch()
-
-              if (costValue > costResult)
-                {
-            	  ciResult   = ci;
-                  vResult    = vtrans;
-                  wResult    = vrot;
-                  vAccResult = vAccMax;
-                  wAccResult = wAccMax;
-                  costResult = costValue;
                 }
-            }
-          else
-            {
+            #endif
 
-              // these velocities are not allowed
-#if DEBUG_VW_WINDOW
+            #if DEBUG_VW_WINDOW
               if (file!=NULL)
                 {
-                  fprintf(file,"=> these velocities are not allowed\n");
+                  fprintf(file,"evaluation\n");
+                  fprintf(file,"  hitAngle     %f\n",deg00(hitAngle));
+                  fprintf(file,"  hitDistance  %f\n",hitDistance);
+                  fprintf(file,"  costHeading  %f\n",costHeading);
+                  fprintf(file,"  costSpeed    %f\n",costSpeed);
+                  fprintf(file,"  costPassing  %f\n",costPassing);
+                  fprintf(file,"  costValue    %f\n",costValue);
                 }
-#endif
-            }
-        }
-    } // end for (vi=ivmin;vi<=ivmax;vi++)
+            #endif
 
-    //std::cout << "cost = " << costResult << "; alpha1 = " << alpha1 << " ; alpha2 = " << alpha2 << " ; alpha3 = " << alpha3 << std::endl;
+          break;
+
+          // this strategy is used to turn in place
+          //
+          // the desired heading is specified by the current
+          // robot position and the goal position
+          //
+          // important hint:
+          // to prevent overshooting the goal orientation, hitAngles
+          // stopping before the goal orientation are better than
+          // hitAngles stopping after the desired orientation. Therefore,
+          // the evaluation function considers the turning direction
+          //
+          case CDL_STRATEGY_11:
+          {
+            double desiredHeading;   //     [-M_PI, M_PI]
+
+            desiredHeading = angle00(atan2(goalY-posY,goalX-posX));
+
+            double angleDelta = angle00(desiredHeading-posA);
+            double vInter = linearinterpolation(rotwCVector,abs00(angleDelta*180/M_PI));
+            vInter = vInter/180*M_PI;
+            if(angleDelta < 0 )
+            {
+              vInter = -vInter;
+            }
+
+            double error = abs00(vInter - vrot);
+
+            if(error > 1.0){
+              costValue = min00(1.0/error,1.00);
+            } else {
+
+              costValue = 100.0 + (1.0 - error);
+
+            }
+            //  std::cout<<"AngleDelta: "<<angleDelta<<" vInter: "<<vInter<<" vrot: "<<vrot<<" error: "<<error<<" costValue: "<<costValue<<std::endl;
+            //  if (abs00(vrot) <= vRotStepHelp)
+            //    {
+            //      //
+            //      // no movement at all
+            //      //
+            //      brakeAngle = 0.0;
+            //      posAstop   = posA;
+            //    }
+            //  else
+            //    {
+            //      //
+            //      // robot turns in place
+            //      //
+            //      brakeAngle = (vrot*vrot)/(2*wAccMax);
+            //      if (vrot < 0.0) brakeAngle *= -1.0;
+            //      // factor 2.0 is used to damp the rotational velocity
+            //      posAstop   = angle00(posA+10.0*brakeAngle);
+            //    }
+            //  hitAngle = angle00(desiredHeading-posAstop);
+            //   //               if ((vrot > 0.0) && (hitAngle >= 0.0))
+            //    {
+            //      // turning left
+            //      costHeading = 1.0-abs00(hitAngle)/M_PI;
+            //    }
+            //  else if ((vrot < 0.0) && (hitAngle <= 0.0))
+            //    {
+            //      // turning right
+            //      costHeading = 1.0-abs00(hitAngle)/M_PI;
+            //    }
+            //  else
+            //    {
+            //      // overshooting
+            //      costHeading = 0.0;
+            //    }
+            //  std::cout<<"vrot: "<<vrot<<" costValue: "<<costValue<<std::endl;
+            //  costValue = costHeading;
+            //  evaluation[vi][wi].costHit      = 0.0;
+            //  evaluation[vi][wi].costPassing  = 0.0;
+            //  evaluation[vi][wi].costSpeed    = 0.0;
+            //  evaluation[vi][wi].costDistance = 0.0;
+            //  evaluation[vi][wi].costHeading  = costHeading;
+            //  evaluation[vi][wi].costValue    = costValue;
+
+            #if DEBUG_VW_WINDOW
+                              if (file!=NULL)
+                                {
+                                  fprintf(file,"rotate in place\n");
+                                  fprintf(file,"pos  x y a %f %f %f\n",posX,posY,deg00(posA));
+                                  fprintf(file,"goal x y   %f %f\n",goalX,goalY);
+                                  fprintf(file,"desiredHeading %f\n",deg00(desiredHeading));
+                                  fprintf(file,"brakeAngle  %f\n",deg00(brakeAngle));
+                                  fprintf(file,"posAstop    %f\n",deg00(posAstop));
+                                  fprintf(file,"hitAngle    %f\n",deg00(hitAngle));
+                                  fprintf(file,"costHeading %f\n",costHeading);
+                                }
+            #endif
+          }
+          break;
+
+          //<startegy added by asteck, mlutz; 2009-10-23>
+          case CDL_STRATEGY_12:
+          {
+            //double free = 1000.0;
+            double angle = (60.0*M_PI/180.0);
+
+            double deltaX = goalX - posX;
+            double deltaY = goalY - posY;
+            double hitDistance = sqrt( deltaX*deltaX + deltaY*deltaY );
+            double hitAngle = angle00( atan2( deltaY, deltaX) - posA );
+
+
+            if (hitAngle < -angle) hitAngle=-angle;
+            if (hitAngle >  angle) hitAngle= angle;
+            costHeading=1.0-abs00(angle00(hitAngle-vrot))/(2*angle);
+
+            costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+            costDist=dist/cdl_max_distance; // CDL_MAX_DISTANCE = 5000.0
+
+            if (costDist>1.0) costDist=1.0;
+
+            double gainHitDist = hitDistance / 1500.0; //hitDistance / 1000.0;
+            if(gainHitDist >1.0) gainHitDist = 1.0;
+
+            if(evalFunc == CDL_EVAL_PASSING) gainHitDist = 1.0;
+
+            alpha1 = 20.0 - (1-gainHitDist) *  19.0; // 20.0 - 19.0
+            alpha2 =  2.0 - (1-gainHitDist) *   1.0; // 2.0  - 1.0
+            alpha3 =  1.0 + (1-gainHitDist) * 100.0; // 1.0  + 100.0
+            costValue = alpha1*costSpeed + alpha2*costDist + alpha3*costHeading;
+
+            //std::cout << "vtrans = " << vtrans << "; vrot = " << vrot/M_PI*180.0 <<  "; costSpeed = " << costSpeed << " ; costDist = " << costDist << " ; costHeading = " << costHeading << " ; costValue = " << costValue << std::endl;
+
+            /*
+            //if ((dist > free) && (vtrans>100.0))
+            if ((hitDistance > free) && (vtrans>100.0))
+            {
+              alpha1=5.0;
+              alpha2=15.0;
+              alpha3=2.0;
+              costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+            }
+            else
+            {
+              alpha1=2.0;
+              alpha2=1.0;
+              alpha3=8.0;
+              costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+            }
+            */
+            break;
+          }//</strategy 12>
+
+
+          case CDL_STRATEGY_13:
+          {
+            costHeading=1.0-abs00(angle00(vrot));
+
+            costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+
+            //std::cout<<"vrot: "<<vrot<<" costHeading: "<<costHeading<<" vtrans: "<<vtrans<<" costSpeed: "<<costSpeed;
+
+            if(abs00(vrot)> 0.10 )
+            {
+              costValue=0;
+            }else{
+              costValue = costSpeed + costHeading;
+            }
+
+            //std::cout<<" costValue: "<<costValue<<std::endl;
+            break;
+          }//</strategy 13>
+
+          //<startegy added by mlutz; 2011-06-08>
+          case CDL_STRATEGY_14: {
+
+            //double free = 1000.0;
+            double angle = (60.0*M_PI/180.0);
+
+            double deltaX = goalX - posX;
+            double deltaY = goalY - posY;
+            double hitAngle = angle00( atan2( deltaY, deltaX) - posA );
+            if (hitAngle < -angle) hitAngle=-angle;
+            if (hitAngle >  angle) hitAngle= angle;
+            costHeading=1.0-abs00(angle00(hitAngle-vrot))/(2*angle);
+
+            costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+            costDist=dist/cdl_max_distance; // CDL_MAX_DISTANCE = 5000.0
+            costDist = 0;
+            if (costDist>1.0) costDist=1.0;
+
+            double gainHitDist = hitDistance / 1500.0; //hitDistance / 1000.0;
+            if(gainHitDist >1.0) gainHitDist = 1.0;
+
+            if(evalFunc == CDL_EVAL_PASSING) gainHitDist = 1.0;
+
+            // alpha1 = 20.0 - (1-gainHitDist) *  19.0; // 20.0 - 19.0
+            // alpha2 =  2.0 - (1-gainHitDist) *   1.0; // 2.0  - 1.0
+            // alpha3 =  1.0 + (1-gainHitDist) * 100.0; // 1.0  + 100.0
+            alpha1 = 1;
+            alpha2 = 1;
+            alpha3 = 2;
+            // costValue = alpha1*costSpeed + alpha2*costDist + alpha3*costHeading;
+            costValue = alpha1*costSpeed + alpha3*costHeading;
+
+            // std::cout <<" vtrans = " << vtrans << "; vrot = " << vrot <<  "; costSpeed = " << costSpeed << " ; costDist = " << costDist << " ; costHeading = " << costHeading << " ; costValue = " << costValue << std::endl;
+
+            //}
+
+            break;
+          }//</strategy 14>
+
+          // ----------------------------------------------------
+          // - akzeptiert Geschwindigkeitsvorgabe von aussen
+          // ----------------------------------------------------
+          case CDL_STRATEGY_2:                 
+          {
+            double free = 1000.0;
+            double angle = (60.0*M_PI/180.0);
+
+            if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
+            if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
+            costHeading=1.0-abs00(angle00(goalHeadingRelative-vrot))/(2*angle);
+
+            costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+            costDist=dist/maxDistance;
+            if (costDist>1.0) costDist=1.0;
+            if ((dist > free) && (vtrans>100.0))
+              {
+                alpha1=1.0; //1
+                alpha2=1.0; //1
+                alpha3=2.0; //2
+                costValue=5+alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+              }
+            else
+              {
+                alpha1=6.0; // 6
+                alpha2=3.0; // 3
+                alpha3=1.0; // 1
+                costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+              }
+
+          }
+          break;
+
+          // ----------------------------------------------------
+          // - macht Geschwindigkeitsregelung selbstaendig
+          // - muss man noch fertig implementieren
+          // ----------------------------------------------------
+          case CDL_STRATEGY_3:  
+          {
+            double angle = (40.0*M_PI/180.0);
+
+            if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
+            if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
+
+            if ((dist < 1000.0) || (abs00(vrot) > angle) || (abs00(vtrans)<50.0))
+              {
+                // mindestens Restwegstrecke von 1000 mm
+                // mindestens Translationsgeschwindigkeit 100 mm/s
+                // maximal Drehung um 40 Grad/s
+                costValue = 0.0;
+              }
+            else
+              {
+                costHeading=1.0-abs00(angle00(goalHeadingRelative-vrot))/(2*angle);
+
+                costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+
+                costDist=dist/maxDistance;
+                if (costDist>1.0) costDist=1.0;
+                costValue=alpha1*costSpeed+alpha2*costDist+alpha3*costHeading;
+              }
+          }
+          break;
+
+          // -------------------------------------------------------
+          // used for testing purposes
+          // - je groesser die Abweichung von der Zielrichtung, desto hoeher w
+          // - je groesser die Entfernung zu Ziel, desto hoeher v
+          // -------------------------------------------------------
+          // vtrans, vrot         aktuell betrachtete Geschwindigkeit
+          // dist                 verbleibende Reststrecke
+          // goalHeadingRelative  Ausrichtungsfehler bezueglich Ziel
+          case CDL_STRATEGY_4:
+          {
+            double angle = (90*M_PI/180.0);
+            double mind  = 1000.0;
+            double minv  = 50.0;
+            double k     = 2.0;               // Linearitaetsfaktor
+            double wmax  = (50.0*M_PI/180.0);   // maximal erlaubte Rotationsgeschwindigkeit
+            double amax  = 30.0;              // zur Berechnung der maximal erlaubten Geschwindigkeit
+
+            double wsoll;
+            double vsoll;
+
+            // Begrenzung des Winkelfehlers
+            if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
+            if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
+
+            // Bestimmung der Solldrehgeschwindigkeit, begrenzt durch wmax
+            // wsoll = sqrt(2*goalHeadingRelative*wmax);
+            wsoll = goalHeadingRelative*k;
+            if (wsoll > wmax) wsoll =  wmax;
+            if (wsoll <-wmax) wsoll = -wmax;
+
+            // Bestimmung der Sollfahrgeschwindigkeit
+            if (maxDistance < 200.0) vsoll=0.0;
+            else vsoll=sqrt(2*maxDistance*amax);
+
+            if ((dist < mind) || (abs00(vrot) > wsoll) || (abs00(vtrans) < minv))
+              {
+                costValue = 0.0;
+              }
+            else
+              {
+                costHeading = 1.0 - min00(abs00(wsoll-vrot)/(2*wmax),1.0);
+                costSpeed   = 1.0 - min00(abs00(vsoll-vtrans)/vmaxIni,1.0);
+                costDist    = min00(dist/maxDistance,1.0);
+                // vtrans=0.0;
+                costValue = 1.0 * costSpeed + 1.0 * costDist + 1.0 * costHeading;
+              }
+            break;
+          }//<asteck>
+                        
+          // ------------------------------------------------------------------------
+          // used for v-w commands from "outside" (for example from joystick)
+          // commands should be set with setDesiredTranslationSpeed and setHeading
+          // 
+          case CDL_STRATEGY_5:
+          {
+            double free   = 1000.0;
+            double angle  = (60.0*M_PI/180.0);
+
+            if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
+            if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
+
+            costHeading = 1.0 - abs00( angle00(goalHeadingRelative-vrot)) / (2*angle);
+            costSpeed   = 1.0 - abs00( desiredTranslationalSpeed-vtrans) / vmaxIni;
+
+            costDist    = 1; //dist/maxDistance;
+
+            alpha1 = 1.0;
+            alpha2 = 1.0;
+            alpha3 = 3.0;
+
+            //costValue =  alpha1*costSpeed + alpha3*costHeading;
+            costValue = alpha1*costSpeed + alpha3*costHeading;
+
+            //if( vtrans == 350 )
+            //  printf("STRAT v ; w ; costValue ; dist -- %5.2f ; %5.2f ; %10.2f ; %6.2f\n", vtrans , vrot, costValue, dist);
+
+            break;
+          } // CDL_STRATEGY_5
+          //</asteck>
+
+          // ------------------------------------------------
+          // - assumes absolute current position
+          // - assumes absolute goal position
+          //
+          // - calculate position when assuming maximum
+          //   allowed decceleration on selected curvature
+          //   for determining all the relevant cost values
+          // ------------------------------------------------
+
+          case CDL_STRATEGY_6:
+          {
+            //
+            // calculate stop position
+            //
+
+            if (abs00(vrot) <= vRotStepHelp)
+              {
+                //
+                //
+                // drive straight forward
+                //
+                //
+                if (abs00(vtrans) <= vTransStepHelp)
+                  {
+                    // no movement at all, but set brakeDist to an
+                    // uncritical value to get the heading direction
+                    // for determining the costGoal value
+                    brakeDist  = 1.0;
+                    brakeAngle = 0.0;
+                  }
+                else
+                  {
+                    // robot moves straight forward
+                    brakeDist  = BRAKE_SECURITY_FACTOR*(vtrans*vtrans)/(2*vAccMax);
+                    brakeAngle = 0.0;
+                  }
+                posXstop     = posX+brakeDist*cos(posA);
+                posYstop     = posY+brakeDist*sin(posA);
+                posAstop     = angle00(posA);
+
+                // intersection of circle around goal position
+                // and line through current position and goal position
+                status = intersectionsCircleLine(
+                            goalX,goalY,cdl_capture_distance,
+                            posX,posY,posXstop,posYstop,
+                            x1i,y1i,x2i,y2i,
+                            nrIntersections);
+                if ((status == 0) && (nrIntersections > 0))
+                  {
+                    // now check whether the intersections are in
+                    // driving direction
+                    double alpha1,alpha2,alpha;
+
+                    alpha1 = atan2(posYstop-posY,posXstop-posX);
+                    alpha2 = atan2(y1i-posY,x1i-posX);
+                    alpha  = angle00(alpha2 - alpha1);
+
+                    if ((alpha > -M_PI) && (alpha < M_PI))
+                      {
+                        // correct heading to hit the goal point therefore
+                        // driving straight forward allows to hit the goal
+                        costPassing = 1;
+                      };
+                  }
+                else
+                  {
+                    // goal point is in reverse direction to current heading or
+                    // is too far away from driving direction
+                    costPassing = 0;
+                  }
+
+                // calculate whether goal point hits the goal position
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+
+
+              }
+            else if (abs00(vtrans) <= vTransStepHelp)
+              {
+                //
+                //
+                // turn in place
+                //
+                //
+                brakeDist       = 0.0;
+                brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
+                if (vrot < 0.0) brakeAngle *= -1.0;
+                posXstop        = posX;
+                posYstop        = posY;
+                posAstop        = angle00(posA+brakeAngle);
+                deltaX          = goalX - posXstop;
+                deltaY          = goalY - posYstop;
+                passingDistance = sqrt(deltaX*deltaX+deltaY*deltaY);
+
+                if (passingDistance<cdl_capture_distance)
+                  {
+                    // turning in place allows to hit the goal since the
+                    // robot is already within the circle around the goal
+                    costPassing = 1;
+                  }
+                else
+                  {
+                    costPassing = 0;
+                  }
+
+                // calculate whether goal point hits the goal position
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+
+              }
+            else if (vrot > 0.0)
+              {
+                //
+                //
+                // drive on curvature, left
+                //
+                //
+                brakeAngle      = BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
+                radius          = vtrans/vrot;
+                posXm           = posX  - radius * sin(posA);
+                posYm           = posY  + radius * cos(posA);
+                posXstop        = posXm + radius * sin(posA+brakeAngle);
+                posYstop        = posYm - radius * cos(posA+brakeAngle);
+                posAstop        = angle00(posA+brakeAngle);
+
+                deltaX          = posXm - goalX;
+                deltaY          = posYm - goalY;
+                passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
+                if (passingDistance<cdl_capture_distance)
+                  {
+                    // the considered path goes through the specified
+                    // goal point within a reasonable bound
+                    costPassing = 1;
+                  }
+                else
+                  {
+                    costPassing = 0;
+                  }
+
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+
+              }
+            else
+              {
+                //
+                //
+                // drive on curvature, right
+                //
+                //
+                brakeAngle      = -BRAKE_SECURITY_FACTOR*(vrot*vrot)/(2*wAccMax);
+                radius          = -vtrans/vrot;   // assume positive radius
+                posXm           = posX  + radius * sin(posA);
+                posYm           = posY  - radius * cos(posA);
+                posXstop        = posXm - radius * sin(posA+brakeAngle);
+                posYstop        = posYm + radius * cos(posA+brakeAngle);
+                posAstop        = angle00(posA+brakeAngle);
+                deltaX          = posXm - goalX;
+                deltaY          = posYm - goalY;
+                passingDistance = abs00(sqrt(deltaX*deltaX+deltaY*deltaY)-radius);
+
+                if (passingDistance<cdl_capture_distance)
+                  {
+                    // the considered path goes through the specified
+                    // goal point within a reasonable bound
+                    costPassing = 1;
+                  }
+                else
+                  {
+                    costPassing = 0;
+                  }
+
+                deltaX      = goalX - posXstop;
+                deltaY      = goalY - posYstop;
+                hitDistance = sqrt(deltaX*deltaX + deltaY*deltaY);
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    costHit = 1;
+                  }
+                else
+                  {
+                    costHit = 0;
+                  }
+
+                // calculate the alignment of the stop position with
+                // the goal point
+                if (hitDistance < cdl_capture_distance)
+                  {
+                    // distance is too small, therefore heading cannot be
+                    // calculated correctly. Since heading in goal point
+                    // is not relevant in this mode, set goalAngle to 0.
+                    hitAngle = 0.0;
+                  }
+                else
+                  {
+                    hitAngle = angle00(atan2(deltaY,deltaX)-posAstop);
+                  }
+              }
+
+            deltaX = posX - goalX;
+            deltaY = posY - goalY;
+            goalDistance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            //
+            //
+            // evaluation functions
+            //
+            //
+            switch (evalFunc)
+              {
+              case CDL_EVAL_STANDARD:
+                //
+                //
+                //
+                break;
+              case CDL_EVAL_APPROACH_OBJECT:
+                //
+                //
+                //
+                break;
+              case CDL_EVAL_PASSING:
+                //
+                // std::cout << "CDL_EVAL_PASSING: posX = " << posX << "; goalX = " << goalX <<"; posY = "<<posY<< "; goalY = "<< goalY <<  "; goalDistance = " << goalDistance << std::endl;
+                //
+                if (goalDistance > rangeFarPassing)
+                  {
+                    desiredTranslationalSpeed = speedFarPassing;
+                  }
+                else if (goalDistance > rangeMediumPassing)
+                  {
+                    desiredTranslationalSpeed = speedMediumPassing;
+                  }
+                else
+                  {
+                    desiredTranslationalSpeed = speedNearPassing;
+                  }
+                costHeading = 1.0-abs00(hitAngle)/M_PI;
+
+                costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                if (costSpeed < 0.0) costSpeed = 0.0;
+
+                costDist=dist/cdl_max_distance;
+                if (costDist > 1.0) costDist = 1.0;
+
+                costValue = 0.0;
+                //  costValue += 1.0*costSpeed+1.0*costDist+2000.0*costHeading;
+                costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
+                costValue += 2*costPassing;
+
+                if (dist > bonusDistPassing)
+                  {
+                    costValue += 5000.0;
+                  }
+
+                if ((vtrans > 5.0) && (vtrans < 100.0)) costValue = 0.0;
+                if (fabs(vtrans) < 5.0)
+                  {
+                    if (vrot >  rad00(10)) vrot =  rad00(10);
+                    if (vrot < -rad00(10)) vrot = -rad00(10);
+                  }
+
+                alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
+                if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
+
+
+                break;
+              case CDL_EVAL_STOPPING:
+                if (goalDistance > rangeFarStopping)
+                  {
+                    desiredTranslationalSpeed = speedFarStopping;
+
+                    costHeading = 1.0-abs00(hitAngle)/M_PI;
+                    costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                    if (costSpeed < 0.0) costSpeed = 0.0;
+
+                    costDist=dist/cdl_max_distance;
+                    if (costDist > 1.0) costDist = 1.0;
+
+                    costValue = 0.0;
+                    costValue += 1.0*costSpeed+1.0*costDist+10.0*costHeading;
+                    costValue += 2*costHit;
+
+                  }
+                else if (goalDistance > rangeMediumStopping)
+                  {
+                    desiredTranslationalSpeed = speedMediumStopping;
+
+                    costHeading = 1.0-abs00(hitAngle)/M_PI;
+                    costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                    if (costSpeed < 0.0) costSpeed = 0.0;
+
+                    costDist=dist/cdl_max_distance;
+                    if (costDist > 1.0) costDist = 1.0;
+
+                    costValue = 0.0;
+                    costValue += 1.0*costSpeed+1.0*costDist+50.0*costHeading;
+                    costValue += 2*costHit;
+
+                  }
+                else
+                  {
+                    desiredTranslationalSpeed = speedNearStopping;
+
+                    costHeading = 1.0-abs00(hitAngle)/M_PI;
+                    costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/1000.0;
+                    if (costSpeed < 0.0) costSpeed = 0.0;
+
+                    costDist=dist/cdl_max_distance;
+                    if (costDist > 1.0) costDist = 1.0;
+
+                    costValue = 0.0;
+                    costValue += 1.0*costSpeed+1.0*costDist+200.0*costHeading;
+                    costValue += 2*costHit;
+
+                  }
+
+                if (dist > bonusDistStopping)
+                  {
+                    costValue += 5000.0;
+                  }
+
+                if ((vtrans > 5.0) && (vtrans < 50.0)) costValue = 0.0;
+                if (fabs(vtrans) < 5.0)
+                  {
+                    if (vrot >  rad00(10)) vrot =  rad00(10);
+                    if (vrot < -rad00(10)) vrot = -rad00(10);
+                  }
+                alpha  = angle00(posA - atan2(goalY-posY,goalX-posX));
+                if ((fabs(alpha) > rad00(45)) && (vtrans > 400.0)) costValue=0;
+
+                break;
+
+              default:
+                costValue = 0.0;
+                break;
+              }
+
+          
+          case CDL_STRATEGY_7:
+          {
+            // ------------------------------------------------------------------------
+            // follow
+            // ------------------------------------------------------------------------
+
+
+
+            if(indexWantedVWCheck[ci]==1){
+              costHeading=1.0-abs00(angle00(desiredRotationalSpeed-vrot))/wmaxIni;
+              costSpeed=1.0-abs00(desiredTranslationalSpeed-vtrans)/vmaxIni;
+              alpha1 = 1;
+              alpha2 = 1;
+              alpha3 = 1;
+              costValue = alpha1*costSpeed + alpha3*costHeading;
+              //                		std::cout<<ci<<" - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<" cost: "<<costValue<<"              v:"<<v<<" w:"<<w<<std::endl;
+            } else {
+              //					  std::cout<<ci<<" not wanted - v|desv: "<<vtrans<<"|"<<desiredTranslationalSpeed<<" w|desw: "<<vrot<<"|"<<desiredRotationalSpeed<<std::endl;
+              costValue = 0;
+            }
+
+            break;
+
+
+
+            // ALT 22.02.2018
+            //                  double free   = 1000.0;
+            //                  double angle  = (60.0*M_PI/180.0);
+            //
+            //                  if (goalHeadingRelative < -angle) goalHeadingRelative=-angle;
+            //                  if (goalHeadingRelative >  angle) goalHeadingRelative= angle;
+            //
+            //                  //gain function for goalheadingrelative
+            //                  // f(x) = 5+ 0.06* x^2
+            //                  double deg_goalHeadingRelative = goalHeadingRelative * (180.0/M_PI);
+            //                  double heading_gain_rad = 0.0;
+            //
+            //                  if(goalHeadingRelative >0.0)
+            //                  {
+            //                  double heading_gain_deg = 5 + (0.06 * deg_goalHeadingRelative * deg_goalHeadingRelative);
+            //                  heading_gain_rad = heading_gain_deg * M_PI/180.0;
+            //                  }else
+            //                  {
+            //                   double heading_gain_deg = -1.0 *(5 + (0.06 * deg_goalHeadingRelative * deg_goalHeadingRelative));
+            //                   heading_gain_rad = heading_gain_deg * M_PI/180.0;
+            //                  }
+            //
+            //                  heading_gain_rad = 0;
+            //
+            //                  costHeading = 1.0 - abs00( angle00(goalHeadingRelative + heading_gain_rad - vrot)) / (2*angle);
+            //                  costSpeed   = 1.0 - abs00( desiredTranslationalSpeed - vtrans) / vmaxIni;
+            //                  costDist    = dist/maxDistance;
+            //
+            //                  alpha1 = 1.0;
+            //                  alpha2 = 2.0;
+            //                  alpha3 = 8.0;
+            //
+            //
+            //                  costValue = alpha1*costSpeed + alpha2*costDist + alpha3*costHeading;
+
+            //                  break;
+          } // CDL_STRATEGY_7
+          break;
+          }
+
+          default:
+            // ----------------------------------------------------
+            //
+            // ----------------------------------------------------
+            std::cout<<"Debug CDL_Lookup in default!!\n";
+            costValue = 0.0;
+            break;
+          } // end switch()
+
+  if (costValue > costResult)
+    {
+    ciResult   = ci;
+      vResult    = vtrans;
+      wResult    = vrot;
+      vAccResult = vAccMax;
+      wAccResult = wAccMax;
+      costResult = costValue;
+    }
+    }
+  else
+    {
+
+      // these velocities are not allowed
+      #if DEBUG_VW_WINDOW
+                    if (file!=NULL)
+                      {
+                        fprintf(file,"=> these velocities are not allowed\n");
+                      }
+      #endif
+    }
+  }
+  } // end for (vi=ivmin;vi<=ivmax;vi++)
+
+    std::cout << "cost = " << costResult << "; alpha1 = " << alpha1 << " ; alpha2 = " << alpha2 << " ; alpha3 = " << alpha3 << std::endl;
 
 
 #if DEBUG_VW_WINDOW

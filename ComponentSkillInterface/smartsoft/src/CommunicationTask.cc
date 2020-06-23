@@ -136,15 +136,15 @@ int CommunicationTask::on_entry()
 int CommunicationTask::on_execute()
 {
 	
-	std::deque<std::string> mydeque,other,query;
+	std::deque<std::string> mydeque, other, query;
 	int retval = COMP->com->recv_lines(mydeque);
 
-	if(retval == 0){
+	if(retval == 0) {
 
 		int ret = separateQuery(mydeque, other, query);
 
 		std::deque<std::string>::iterator it;
-		for(it=query.begin(); it!=query.end();++it)
+		for(it=query.begin(); it != query.end(); ++it)
 		{
 			CommBasicObjects::CommKBRequest request;
 			CommBasicObjects::CommKBResponse answer;

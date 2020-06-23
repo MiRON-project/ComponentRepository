@@ -86,6 +86,13 @@ ZAFH Servicerobotik Ulm, Germany
   (if *DEBUG-LI* (format t "svc: ~s~%" svc))
   (if *DEBUG-LI* (format t "service: ~s~%" service))
   (if *DEBUG-LI* (format t "prm: ~s~%" prm))
+  (format t "~%~%SEND COMMAND START~%")
+  (format t "mod-type: ~s~%" mod-type)
+  (format t "mod-inst: ~s~%" mod-inst)
+  (format t "ci-inst-name: ~s~%" ci-inst-name)
+  (format t "svc: ~s~%" svc)
+  (format t "service: ~s~%" service)
+  (format t "prm: ~s~%" prm)
 
   ;;TODO REMOVE COMP_TYPE
   (let ((comp-type nil)

@@ -334,7 +334,7 @@ int CdlTask::on_execute()
 	temp_omega = 0.0;
 	//</alexej>
 
-//		std::cout << "vmin: " << local_vmin << "  vmax: " << local_vmax << std::endl;
+	//		std::cout << "vmin: " << local_vmin << "  vmax: " << local_vmax << std::endl;
 
 
 	// we have to ask for the current velocities
@@ -547,7 +547,7 @@ int CdlTask::on_execute()
 							double goalX,goalY;
 							goalX = node.getX();
 							goalY = node.getY();
-//								std::cout<<"PathNavGoal: "<<goalX<<" "<<goalY<<std::endl;
+			//								std::cout<<"PathNavGoal: "<<goalX<<" "<<goalY<<std::endl;
 
 							double goalXRobot_tmp, goalYRobot_tmp;
 							transformWorldPointToRobot(x/1000.0,y/1000.0,a,goalX,goalY,goalXRobot_tmp,goalYRobot_tmp);
@@ -570,10 +570,10 @@ int CdlTask::on_execute()
 						std::cout<<pathWidth[i]<<std::endl;
 						}
 						//TEST DATA
-//							pathList.push_back(std::make_pair(-2000,0000));
-//							pathList.push_back(std::make_pair(-1000,-1000));
-//							pathList.push_back(std::make_pair(0000,0000));
-//							pathList.push_back(std::make_pair(1000,500));
+			//							pathList.push_back(std::make_pair(-2000,0000));
+			//							pathList.push_back(std::make_pair(-1000,-1000));
+			//							pathList.push_back(std::make_pair(0000,0000));
+			//							pathList.push_back(std::make_pair(1000,500));
 
 						COMP->cdlLookup->setPathNavPathList(pathList,pathWidth);
 
@@ -599,7 +599,7 @@ int CdlTask::on_execute()
 							// -------------------------------------------------
 							COMP->cdlLookup->setGoalPosition(goalXWorld*1000.0,goalYWorld*1000.0);
 							heading  = angle00(atan2(goalYWorld*1000.0-y,goalXWorld*1000.0-x)-a);
-//								std::cout<<" goalX: "<<goalX*1000.0<<" x: "<<x<<" goalY: "<< goalY*1000.0<<" y: "<<y<<" a: "<<a<<std::endl;
+			//								std::cout<<" goalX: "<<goalX*1000.0<<" x: "<<x<<" goalY: "<< goalY*1000.0<<" y: "<<y<<" a: "<<a<<std::endl;
 
 						} else {
 							COMP->cdlLookup->setPathNavGoal(startXRobot*1000.0,startYRobot*1000.0,goalXRobot*1000.0,goalYRobot*1000.0);
@@ -658,20 +658,20 @@ int CdlTask::on_execute()
 					if ((heading < local_rotateError) && (heading > (-local_rotateError) ))
 					{
 						// heading ok, stop turning
-//							vres = 0.0;
-//							wres = 0.0;
-//
+			//							vres = 0.0;
+			//							wres = 0.0;
+			//
 						stalledFlag = 0;
 
 						// -------------------------------------------
 						// switch to next state
 						// -------------------------------------------
-//							if(w == 0)
-//							{
+			//							if(w == 0)
+			//							{
 							std::cout<<"HEADING OK --> DRIVE"<<std::endl;
 							pathNavState = PATHNAV_DRIVE;
 							COMP->cdlLookup->setUsePathBorders(true);
-//							}
+			//							}
 					} else {
 						COMP->cdlLookup->setRotDevSpeed(localState.getCdlRotate().getRotDev1(), localState.getCdlRotate().getRotSpeed1(),
 														localState.getCdlRotate().getRotDev2(), localState.getCdlRotate().getRotSpeed2(),
@@ -736,22 +736,22 @@ int CdlTask::on_execute()
 							std::cout<<"nextGoalPointDist<0.4 --> speed down 150"<<std::endl;
 							COMP->cdlLookup->setDesiredTranslationalSpeed(local_vmax);
 							COMP->cdlLookup->calculateSpeedValues(v, w, x, y, a, local_vmin, 150, local_wmin, local_wmax, CDL_STRATEGY_16, evalFunction, vres, wres, vaccres, waccres);
-//								std::cout << "vres = " << vres << "; wres = " << wres << std::endl;
+			//								std::cout << "vres = " << vres << "; wres = " << wres << std::endl;
 
 						} else {
 							//TODO
 							if (trick15Flag == true)
 							{
-//									double trick15Diff;
-//									gettimeofday(&currentTime,0);
-//									trick15Diff  = (double)(currentTime.tv_usec - beginTrick15Time.tv_usec)/1000000.0;
-//									trick15Diff += (double)(currentTime.tv_sec  - beginTrick15Time.tv_sec);
-//									if(trick15Diff>5.0)
-//									{
-//										trick15Flag = false;
-//										std::cout<<"END TRICK15"<<std::endl;
-//
-//									}
+			//									double trick15Diff;
+			//									gettimeofday(&currentTime,0);
+			//									trick15Diff  = (double)(currentTime.tv_usec - beginTrick15Time.tv_usec)/1000000.0;
+			//									trick15Diff += (double)(currentTime.tv_sec  - beginTrick15Time.tv_sec);
+			//									if(trick15Diff>5.0)
+			//									{
+			//										trick15Flag = false;
+			//										std::cout<<"END TRICK15"<<std::endl;
+			//
+			//									}
 
 								if(trick15GoalX != goalXWorld || trick15GoalY != goalYWorld){
 									trick15Flag = false;
@@ -771,7 +771,7 @@ int CdlTask::on_execute()
 							if(vres == 0.0 && wres == 0.0 && v== 0.0 && trick15Flag==false){
 								std::cout<<"START TRICK15"<<std::endl;
 							trick15Flag = true;
-//									gettimeofday(&beginTrick15Time,0);
+			//									gettimeofday(&beginTrick15Time,0);
 								//the first occurence of trick 15
 								trick15GoalX = goalXWorld;
 								trick15GoalY = goalYWorld;
@@ -951,8 +951,6 @@ int CdlTask::on_execute()
 			break;
 		} // case CDL_REACTIVE
 
-
-
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// CDL_JOYSTICK
 		/////////////////////////////////////////////////////////////////////////////////////////
@@ -972,8 +970,6 @@ int CdlTask::on_execute()
 
 			break;
 		} // case CDL_JOYSTICK
-
-
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// CDL_TURN
@@ -999,8 +995,6 @@ int CdlTask::on_execute()
 
 			break;
 		}
-
-
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// CDL_APPROACH_HALT
@@ -1163,18 +1157,27 @@ int CdlTask::on_execute()
 				{
 					//COMP->cdlLookup->calculateSpeedValues(v, w, x, y, a, COMP->localState.vmin, COMP->localState.vmax, COMP->localState.wmin, COMP->localState.wmax, CDL_STRATEGY_6, evalFunction, vres, wres, vaccres, waccres);
 					COMP->cdlLookup->setDesiredTranslationalSpeed(local_vmax);
-//						COMP->cdlLookup->calculateSpeedValues(v, w, x, y, a, local_vmin, local_vmax, local_wmin, local_wmax, CDL_STRATEGY_12, evalFunction, vres, wres, vaccres, waccres);
+			//						COMP->cdlLookup->calculateSpeedValues(v, w, x, y, a, local_vmin, local_vmax, local_wmin, local_wmax, CDL_STRATEGY_12, evalFunction, vres, wres, vaccres, waccres);
 					//TODO THIS SHOULD BE SEPARATED USING PARAMETER (INI) 
 					//FOR ROBOTINO AND FACTORY 4 SETTING
                                         COMP->cdlLookup->calculateSpeedValues(v, w, x, y, a, local_vmin, local_vmax, local_wmin, local_wmax, CDL_STRATEGY_14, evalFunction, vres, wres, vaccres, waccres);
-					std::cout << "vres = " << vres << "; wres = " << wres << std::endl;
+					
+					std::cout << "v = " << v << ", w = " << w 
+						<< ", x = " << x << ", y = " << y 
+						<< ", a = " << a << ", local_vmin = " << local_vmin 
+						<< ", local_vmax = " << local_vmax << ", local_wmin = " << local_wmin 
+						<< ", local_wmax = " << local_wmax << ", vres = " << vres 
+						<< ", wres = " << wres << ", vaccres = " << vaccres << "\n";
+					
 					double gainDist = distance / 750.0;
 					if(gainDist>1.0) gainDist=1.0;
 
 					vres *= gainDist;
 					if(vres > 20 && vres < 150) vres = 150;
+					/*
 					std::cout << "vres = " << vres << "; wres = " << wres << std::endl;
 					std::cout << "---------------------------------------------------------------------------\n\n\n";
+					*/
 				}
 			}
 
@@ -1578,8 +1581,6 @@ int CdlTask::on_execute()
 			break;
 		} //case CommNavigationObjects::CdlTagType::CDL_APPROACH
 
-
-
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// CDL_FOLLOW
 		/////////////////////////////////////////////////////////////////////////////////////////
@@ -1608,7 +1609,7 @@ int CdlTask::on_execute()
 	        _followDistVWControl.push_back(std::make_pair( minimum_rotation_rad*10, local_wmax));
 
 
-		COMP->trackingClient->getUpdate(trackingGoal);
+			COMP->trackingClient->getUpdate(trackingGoal);
 			trackingGoal.get( trackAngle, trackDistance, trackX, trackY, trackFlag);
 			unsigned long int currentGoalCounter = trackingGoal.getGoalCount();
 
@@ -1657,7 +1658,7 @@ int CdlTask::on_execute()
 					double t_x = res_t(0,0);
 					double t_y = res_t(1,0);
 
-//						std::cout<<"Pose Diff - x:"<<t_x<<" y:"<<t_y<<" t_alpha:"<<t_alpha<<std::endl;
+			//						std::cout<<"Pose Diff - x:"<<t_x<<" y:"<<t_y<<" t_alpha:"<<t_alpha<<std::endl;
 
 
 					arma::mat trans(3,3);
@@ -1686,14 +1687,14 @@ int CdlTask::on_execute()
 					trackX = point(0,0);
 					trackY = point(0,1);
 
-//						std::cout<<"Track: X:"<<trackX<<" Y:"<<trackY<<std::endl;
+			//						std::cout<<"Track: X:"<<trackX<<" Y:"<<trackY<<std::endl;
 
 					//show_px_color(trackX, trackY, CV_RGB(0, 0, 255)); // gerasterte alte untransformiert
 					//show_px_color(point(0,0), point(0,1), CV_RGB(255, 0, 255)); // alte transformiert = ungerastert/kontinuierliche werte
 					trackFlag = true;
 				} else {
-//						std::cout<<"New Goal!"<<std::endl;
-//						std::cout<<"NG: ("<<trackX<<"|"<<trackY<<")"<<std::endl;
+			//						std::cout<<"New Goal!"<<std::endl;
+			//						std::cout<<"NG: ("<<trackX<<"|"<<trackY<<")"<<std::endl;
 				}
 			} else {
 				std::cout<<"CDLTask - FOLLOW - First run!"<<std::endl;
@@ -1775,7 +1776,7 @@ int CdlTask::on_execute()
 					} else {
 						COMP->cdlLookup->calculateSpeedValues(v,w,0.0,0.0,0.0,local_vmin,local_vmax,local_wmin,local_wmax,CDL_STRATEGY_7,CDL_EVAL_STANDARD,vres,wres,vaccres,waccres);
 					}
-//						std::cout << "Res Speed: ("<<vres<<"|"<<wres<<")"<<std::endl;
+			//						std::cout << "Res Speed: ("<<vres<<"|"<<wres<<")"<<std::endl;
 
 				}
 
@@ -1913,8 +1914,6 @@ int CdlTask::on_execute()
 				break;
 		}
 
-
-
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// default -> no strategy selected
 		/////////////////////////////////////////////////////////////////////////////////////////
@@ -1951,9 +1950,9 @@ int CdlTask::on_execute()
 			if(COMP->cdlLookup->pathNavRecoverRobotToPathCenter(vX,vY,vW,done) != 0)
 			{
 				//TODO may be that we need an separate event for that case!?
-//					CommNavigationObjects::CommCdlRobotBlockedState robotBlockedState;
-//					robotBlockedState.setNewState(CommNavigationObjects::CdlRobotBlockEventType::CDL_ROBOT_BLOCKED);
-//					COMP->robotBlockedEventServer->put(robotBlockedState);
+				//					CommNavigationObjects::CommCdlRobotBlockedState robotBlockedState;
+				//					robotBlockedState.setNewState(CommNavigationObjects::CdlRobotBlockEventType::CDL_ROBOT_BLOCKED);
+				//					COMP->robotBlockedEventServer->put(robotBlockedState);
 
 			} else {
 				vel.set_vX(vX, 0.001);
@@ -1961,9 +1960,9 @@ int CdlTask::on_execute()
 				vel.set_omega(vW);
 				if(done == true){
 					//fire event for unblocked!
-//						CommNavigationObjects::CommCdlRobotBlockedState robotBlockedState;
-//						robotBlockedState.setNewState(CommNavigationObjects::CdlRobotBlockEventType::CDL_ROBOT_UNBLOCKED_PATH);
-//						COMP->robotBlockedEventServer->put(robotBlockedState);
+					//						CommNavigationObjects::CommCdlRobotBlockedState robotBlockedState;
+					//						robotBlockedState.setNewState(CommNavigationObjects::CdlRobotBlockEventType::CDL_ROBOT_UNBLOCKED_PATH);
+					//						COMP->robotBlockedEventServer->put(robotBlockedState);
 				}
 			}
 		} else
@@ -1975,11 +1974,11 @@ int CdlTask::on_execute()
 			vel.set_omega(wres);
 		}
 
-//			//DEBUG
-//			vel.setVX(0);
-//			vel.setVY(0);
-//			vel.set_omega(0);
-//			//END
+			//			//DEBUG
+			//			vel.setVX(0);
+			//			vel.setVY(0);
+			//			vel.set_omega(0);
+			//			//END
 
 		COMP->navVelSendClient->send(vel);
 		std::cout << "send " << vel << " status: "<< status<<std::endl;
